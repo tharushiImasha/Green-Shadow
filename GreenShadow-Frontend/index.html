@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green shadow</title>
+    <link rel="stylesheet" href="/style/login.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container" style="max-width: 1280px;">
+
+        <div class="login-form">
+            <img src="/assets/Logo.png" alt="Green Shadow Logo" class="logo">
+
+            <div class="login-inside">
+
+                <h1>Welcome back!</h1>
+                <p>Let's Make Magic Happen</p>
+
+                <div class="social-login">
+                    <button class="google-login"><img src="/assets/google.png" alt="">Login with Google</button>
+                    <button class="apple-login"><img src="/assets/apple.png" alt="">Login with Apple</button>
+                </div>
+
+                <div class="or-line">
+                    <div class="line"></div>
+                    <h5>or</h5>
+                    <div class="line"></div>
+                </div>
+
+                <form style="width: 463px;">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" placeholder="Enter your username/email">
+
+                    <div class="pw-visible">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                        <i class="ri-eye-off-line" id="toggle-password"></i>
+                    </div>
+
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <button type="button" class="login-btn" id="login" onclick="user_login()">Login</button>
+                </form>
+
+                <p class="register">Don't have an account? <a href="/pages/Registration.html">Register now.</a></p>
+            </div>
+
+        </div>
+
+        <div class="login-image">
+            <img src="/assets/Login.png" alt="Scenic Image">
+        </div>
+    </div>
+
+    <script src="/js/login.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", serif;
+}
+
+body {
+    display: flex;
+    background-color: #F1F7F7 !important;
+    /* overflow: hidden; */
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: white;
+    color: #004463;
+    font-size: 14px;
+    font-weight: 500;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    font-weight: bold;
+    margin-bottom: 55px;
+    margin-top: 55px;
+}
+
+li{
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+}
+
+li img{
+    width: 20px;
+}
+
+nav{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: left;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    padding: 15px 0;
+    cursor: pointer;
+}
+
+.logout {
+    margin-top: 115px;
+}
+
+.logout button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 15px;
+    border: none;
+    background-color: transparent;
+    color: #004463;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.logout img{
+    width: 20px;
+}
+
+.image-container {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.image-container img{
+    width: 180px;
+}
+
+/* Main Content */
+
+.content {
+    margin-left: 250px;
+    margin-right: 300px;
+    padding: 60px 50px;
+    width: calc(100% - 550px);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 65px;
+}
+
+.welcome{
+    line-height: 30px;
+    margin-bottom: 45px;
+}
+
+.welcome h2 {
+    font-size: 32px;
+    color: black;
+}
+
+.welcome h5{
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+header input[type="text"] {
+    width: 330px;
+    height: 45px;
+    padding: 20px;
+    padding-left: 55px;
+    border-radius: 50px;
+    background-color: white;
+    border: none;
+    position: relative;
+}
+
+.search-bar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.seaech-img{
+    width: 18px;
+    position: absolute;
+    left: 15px;
+}
+
+header input::placeholder{
+    color: rgba(0, 0, 0, 0.26);
+    font-size: 14px;
+}
+
+.notification-container {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.notification-icon {
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.notification-icon img{
+    width: 19px;
+}
+
+.profile-picture {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.widgets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.widget {
+    background: white;
+    padding: 25px;
+    border-radius: 17px;
+    box-shadow: 0 0px 40px rgba(0, 0, 0, 0.068);
+}
+
+.widget h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.right-sidebar {
+    width: 300px;
+    height: 100vh;
+    background-color: #162635;
+    position: fixed;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.field-image {
+    background: url('/assets/Dashboard-Side.png') no-repeat center center/cover;
+    height: 600px;
+    width: 100%;
+    overflow: hidden;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.recent-logs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.recent-logs h4{
+    color: white;
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+.recent-logs h5 {
+    color: rgba(255, 255, 255, 0.57);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.recent-logs p {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.log-line{
+    width: 275px;
+    background-color: white;
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.log-det{
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.sidebar nav ul li:hover {
+    color: #162635;
+}
+
+.sidebar nav ul li.active {
+    background-color: #ECF1F1;
+    width: 170px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    position: relative;
+}
+
+.sidebar nav ul li.active::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: #162635;
+}

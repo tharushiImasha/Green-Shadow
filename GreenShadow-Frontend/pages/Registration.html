@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green shadow</title>
+    <link rel="stylesheet" href="/style/login.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+
+        <div class="login-form">
+            <img src="/assets/Logo.png" alt="Green Shadow Logo" class="logo">
+
+            <div class="login-inside" style="padding: 20px;">
+                
+                <h1>Create an Account</h1>
+                <p>Let's Make Magic Happen</p>
+                
+                <div class="social-login">
+                    <button class="google-login"><img src="/assets/google.png" alt="">Signup with Google</button>
+                    <button class="apple-login"><img src="/assets/apple.png" alt="">Signup with Apple</button>
+                </div>
+
+                <div class="or-line">
+                    <div class="line"></div>
+                    <h5>or</h5>
+                    <div class="line"></div>
+                </div>
+                
+                <form>
+                    <label for="username">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name">
+
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" placeholder="Enter your username/email">
+
+                    <div class="password-inputs">
+
+                        <div class="pw-visible">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password">
+                            <i class="ri-eye-off-line" id="toggle-password"></i>
+                        </div>
+                       
+                        <div class="pw-visible">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" placeholder="Confirm your password">
+                            <i class="ri-eye-off-line" id="toggle-conf-password"></i>
+                        </div>
+                        
+                    </div>
+                
+                    <button type="submit" class="login-btn" style="margin-top: 35px;">Create Acc</button>
+                </form>
+                
+                <p class="register">Have an account? <a href="/index.html">Login now.</a></p>
+            </div>
+            
+        </div>
+    
+        <div class="login-image">
+            <img src="/assets/Registration.png" alt="Scenic Image">
+        </div>
+    </div>
+
+    <script src="/js/registration.js"></script>
+ 
+</body>
+</html>

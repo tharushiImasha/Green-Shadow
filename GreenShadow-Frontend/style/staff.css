@@ -1,0 +1,94 @@
+#staff {
+    overflow-y: auto;
+}
+
+.radio-btn{
+    margin-top: 5px;
+}
+
+.radio-container {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.623);
+    line-height: 24px;
+    margin-right: 60px;
+}
+
+/* Hide default radio button */
+.radio-container input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Custom checkmark */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 2px solid #0000002d;
+    border-radius: 50%;
+}
+
+/* Change background on hover */
+.radio-container:hover input~.checkmark {
+    background-color: #e4f2ff;
+}
+
+/* Checkmark when radio is selected */
+.radio-container input:checked~.checkmark {
+    background-color: #026664;
+}
+
+/* Create inner dot when checked */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+}
+
+/* Show inner dot on checked */
+.radio-container input:checked~.checkmark:after {
+    display: block;
+}
+
+.address-input{
+    display: flex;
+    column-gap: 10px;
+}
+
+input[type="date"] {
+    font-size: 11px;
+    color: #555;
+}
+
+/* Placeholder color for the date input */
+input[type="date"]::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 11px;
+    opacity: 1;
+}
+
+::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+}
+
+:-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+}
+
+::-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.3);
+}
