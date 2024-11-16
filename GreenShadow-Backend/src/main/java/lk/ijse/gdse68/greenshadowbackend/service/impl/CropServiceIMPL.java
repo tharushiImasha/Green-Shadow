@@ -1,9 +1,12 @@
 package lk.ijse.gdse68.greenshadowbackend.service.impl;
 
+import lk.ijse.gdse68.greenshadowbackend.customObj.CropErrorResponse;
+import lk.ijse.gdse68.greenshadowbackend.customObj.CropResponse;
 import lk.ijse.gdse68.greenshadowbackend.dao.CropDAO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.CropDTO;
 import lk.ijse.gdse68.greenshadowbackend.entity.impl.CropEntity;
 import lk.ijse.gdse68.greenshadowbackend.exception.DataPersistFailedException;
+import lk.ijse.gdse68.greenshadowbackend.exception.FieldNotFound;
 import lk.ijse.gdse68.greenshadowbackend.service.CropService;
 import lk.ijse.gdse68.greenshadowbackend.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,22 +52,42 @@ public class CropServiceIMPL implements CropService {
     }
 
     @Override
-    public void updateCrop(String crop_code, CropDTO cropDTO) throws Exception {
-
+    public void updateCrop(CropDTO cropDTO) throws Exception {
+        Optional<CropEntity> tmpCrop = cropDAO.findById(cropDTO.getCrop_code());
+        if (!tmpCrop.isPresent()) {
+            throw new FieldNotFound("Crop not found");
+        }else {
+            tmpCrop.get().setCommon_name(cropDTO.getCommon_name());
+            tmpCrop.get().setSpecific_name(cropDTO.getSpecific_name());
+            tmpCrop.get().setCrop_image(cropDTO.getCrop_image());
+            tmpCrop.get().setCategory(cropDTO.getCategory());
+            tmpCrop.get().setCrop_season(cropDTO.getCrop_season());
+//            tmpCrop.get().setField(cropDTO.getField_code());
+        }
     }
 
     @Override
     public void deleteCrop(String crop_code) throws Exception {
-
+        Optional<CropEntity> byId = cropDAO.findById(crop_code);
+        if (!byId.isPresent()) {
+            throw new FieldNotFound("Crop not found");
+        }else {
+            cropDAO.deleteById(crop_code);
+        }
     }
 
     @Override
     public List<CropDTO> getAllCrops() throws Exception {
-        return List.of();
+        List<CropEntity> allCrop = cropDAO.findAll();
+        return mapping.convertToCropDTOList(allCrop);
     }
 
     @Override
-    public CropDTO getCrop(String crop_code) throws Exception {
-        return null;
+    public CropResponse getCrop(String crop_code) throws Exception {
+        if(cropDAO.existsById(crop_code)) {
+            return mapping.convertToCropDTO(cropDAO.getReferenceById(crop_code));
+        }else {
+            return new CropErrorResponse(0, "Crop Not Found");
+        }
     }
 }

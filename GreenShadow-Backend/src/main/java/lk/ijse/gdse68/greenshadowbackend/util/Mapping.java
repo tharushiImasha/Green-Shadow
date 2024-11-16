@@ -5,8 +5,11 @@ import lk.ijse.gdse68.greenshadowbackend.dto.impl.FieldDTO;
 import lk.ijse.gdse68.greenshadowbackend.entity.impl.CropEntity;
 import lk.ijse.gdse68.greenshadowbackend.entity.impl.FieldEntity;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class Mapping {
@@ -27,5 +30,13 @@ public class Mapping {
     }
     public FieldEntity convertToFieldEntity(FieldDTO fieldDTO) {
         return modelMapper.map(fieldDTO, FieldEntity.class);
+    }
+
+    public List<FieldDTO> convertToFieldDTOList(List<FieldEntity> allField) {
+        return modelMapper.map(allField, new TypeToken<List<FieldDTO>>() {}.getType());
+    }
+
+    public List<CropDTO> convertToCropDTOList(List<CropEntity> allCrop) {
+        return modelMapper.map(allCrop, new TypeToken<List<CropDTO>>() {}.getType());
     }
 }
