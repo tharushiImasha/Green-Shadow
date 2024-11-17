@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.greenshadowbackend.dto.impl;
 
+import lk.ijse.gdse68.greenshadowbackend.customObj.StaffResponse;
 import lk.ijse.gdse68.greenshadowbackend.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class StaffDTO implements SuperDTO {
+public class StaffDTO implements SuperDTO, StaffResponse {
     private String id;
     private String first_name;
     private String last_name;
