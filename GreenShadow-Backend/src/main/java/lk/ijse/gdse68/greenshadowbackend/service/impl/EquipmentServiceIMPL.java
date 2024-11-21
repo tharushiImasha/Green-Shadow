@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,6 @@ public class EquipmentServiceIMPL implements EquipmentService {
     private Mapping mapping;
     @Autowired
     private StaffDAO staffDAO;
-
     @Autowired
     private FieldDAO fieldDAO;
 
@@ -54,22 +54,17 @@ public class EquipmentServiceIMPL implements EquipmentService {
             equipmentDTO.setEquipment_id(generateNextId());
         }
 
-        // Fetch StaffEntity by staff_id
         StaffEntity staffEntity = staffDAO.findById(equipmentDTO.getStaff_id())
                 .orElseThrow(() -> new StaffNotFound("Staff not found with ID: " + equipmentDTO.getStaff_id()));
 
-        // Fetch FieldEntity by field_code
         FieldEntity fieldEntity = fieldDAO.findById(equipmentDTO.getField_code())
                 .orElseThrow(() -> new FieldNotFound("Field not found with code: " + equipmentDTO.getField_code()));
 
-        // Map DTO to Entity
         EquipmentEntity equipmentEntity = mapping.convertToEquipmentEntity(equipmentDTO);
 
-        // Set relationships
         equipmentEntity.setStaff(staffEntity);
         equipmentEntity.setField(fieldEntity);
 
-        // Save EquipmentEntity
         EquipmentEntity savedEquipment = equipmentDAO.save(equipmentEntity);
         if (savedEquipment == null) {
             throw new DataPersistFailedException("Cannot Save Equipment");
@@ -115,15 +110,28 @@ public class EquipmentServiceIMPL implements EquipmentService {
     @Override
     public List<EquipmentDTO> getAllEquipment() throws Exception {
         List<EquipmentEntity> allEquipment = equipmentDAO.findAll();
-        return mapping.convertToEquipmentDTOList(allEquipment);
+        List<EquipmentDTO> equipmentDTOList = new ArrayList<>();
+
+        for (EquipmentEntity equipment : allEquipment) {
+            EquipmentDTO dto = mapping.convertToEquipmentDTO(equipment);
+            dto.setStaff_id(equipment.getStaff().getId());
+            equipmentDTOList.add(dto);
+        }
+
+        return equipmentDTOList;
     }
 
     @Override
     public EquipmentResponse getEquipment(String equipment_id) throws Exception {
-        if(equipmentDAO.existsById(equipment_id)) {
-            return mapping.convertToEquipmentDTO(equipmentDAO.getReferenceById(equipment_id));
-        }else {
+        Optional<EquipmentEntity> equipmentOptional = equipmentDAO.findById(equipment_id);
+        if (equipmentOptional.isPresent()) {
+            EquipmentEntity equipment = equipmentOptional.get();
+            EquipmentDTO dto = mapping.convertToEquipmentDTO(equipment);
+            dto.setStaff_id(equipment.getStaff().getId());
+            return dto;
+        } else {
             return new EquipmentErrorResponse(0, "Equipment Not Found");
         }
     }
+
 }
