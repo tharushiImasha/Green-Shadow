@@ -8,14 +8,12 @@ import lk.ijse.gdse68.greenshadowbackend.service.LogsService;
 import lk.ijse.gdse68.greenshadowbackend.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,7 +25,7 @@ public class LogController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> saveLog(
-            @RequestPart("log_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date log_date,
+            @RequestPart("log_date") String log_date,
             @RequestPart("log_details") String log_details,
             @RequestPart("observed_image") MultipartFile observed_image,
             @RequestPart("field_code") String field_code,
@@ -35,6 +33,15 @@ public class LogController {
             @RequestPart("id") String id
     ){
         try {
+
+            System.out.println("log_date: " + log_date);
+            System.out.println("log_details: " + log_details);
+            System.out.println("observed_image: " + (observed_image != null ? observed_image.getOriginalFilename() : "null"));
+            System.out.println("field_code: " + field_code);
+            System.out.println("crop_code: " + crop_code);
+            System.out.println("id: " + id);
+
+
             byte[] imageByteCollection1 = observed_image.getBytes();
             String base64Image = AppUtil.toBase64image(imageByteCollection1);
 
@@ -49,6 +56,8 @@ public class LogController {
             logsService.saveLogs(buildLogDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistFailedException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             e.printStackTrace();
@@ -81,7 +90,7 @@ public class LogController {
 
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateLog(@PathVariable("id") String log_id,
-                                          @RequestPart("log_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date log_date,
+                                          @RequestPart("log_date") String log_date,
                                           @RequestPart("log_details") String log_details,
                                           @RequestPart("observed_image") MultipartFile observed_image,
                                           @RequestPart("field_code") String field_code,

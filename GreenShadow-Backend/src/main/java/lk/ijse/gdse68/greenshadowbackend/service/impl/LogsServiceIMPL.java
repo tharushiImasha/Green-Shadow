@@ -51,6 +51,8 @@ public class LogsServiceIMPL implements LogsService {
             logsDTO.setLog_code(generateNextId());
         }
 
+        System.out.println(logsDTO);
+
         StaffEntity staffEntity = staffDAO.findById(logsDTO.getId())
                 .orElseThrow(() -> new StaffNotFound("Staff not found with ID: " + logsDTO.getId()));
         CropEntity cropEntity = cropDAO.findById(logsDTO.getCrop_code())

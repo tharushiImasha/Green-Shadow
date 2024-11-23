@@ -6,6 +6,8 @@ import lk.ijse.gdse68.greenshadowbackend.dto.impl.FieldDTO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.LogsDTO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.VehicleDTO;
 import lk.ijse.gdse68.greenshadowbackend.entity.SuperEntity;
+import lk.ijse.gdse68.greenshadowbackend.enums.Gender;
+import lk.ijse.gdse68.greenshadowbackend.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,8 +35,10 @@ public class StaffEntity implements SuperEntity {
     private String address_line_4;
     private String address_line_5;
     private String designation;
-    private String role;
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     private Date dob;
     private Date joined_date;
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)

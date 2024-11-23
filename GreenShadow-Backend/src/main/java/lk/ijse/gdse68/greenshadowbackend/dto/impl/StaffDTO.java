@@ -2,6 +2,8 @@ package lk.ijse.gdse68.greenshadowbackend.dto.impl;
 
 import lk.ijse.gdse68.greenshadowbackend.customObj.StaffResponse;
 import lk.ijse.gdse68.greenshadowbackend.dto.SuperDTO;
+import lk.ijse.gdse68.greenshadowbackend.enums.Gender;
+import lk.ijse.gdse68.greenshadowbackend.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,8 @@ public class StaffDTO implements SuperDTO, StaffResponse {
     private String address_line_4;
     private String address_line_5;
     private String designation;
-    private String role;
-    private String gender;
+    private Role role;
+    private Gender gender;
     private Date dob;
     private Date joined_date;
     private List<VehicleDTO> vehicleDTOS;
