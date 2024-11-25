@@ -7,8 +7,8 @@ import java.util.List;
 
 public class UserServiceIMPL implements UserService {
     @Override
-    public String saveUser(UserDTO user) throws Exception {
-        return "";
+    public void saveUser(UserDTO user) throws Exception {
+
     }
 
     @Override

@@ -20,10 +20,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/field")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class FieldController {
 
     @Autowired
     private final FieldService fieldService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextCropId() {
+        String nextId = fieldService.generateNextId();
+        return ResponseEntity.ok(nextId);
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> saveField(
@@ -120,6 +127,7 @@ public class FieldController {
         } catch (FieldNotFound e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

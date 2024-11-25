@@ -20,10 +20,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/crop")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CropController {
 
     @Autowired
     private final CropService cropService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextCropId() {
+        String nextCropId = cropService.generateNextCropId();
+        return ResponseEntity.ok(nextCropId);
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> saveField(

@@ -73,6 +73,11 @@ form{
     border-radius: 6px;
 }
 
+.location_input{
+    display: flex;
+    gap: 15px;
+}
+
 .btn-container button {
     width: 135px;
     height: 35px;

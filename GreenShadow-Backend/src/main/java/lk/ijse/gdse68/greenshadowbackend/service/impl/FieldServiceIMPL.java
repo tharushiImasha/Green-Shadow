@@ -4,6 +4,7 @@ import lk.ijse.gdse68.greenshadowbackend.customObj.FieldErrorResponse;
 import lk.ijse.gdse68.greenshadowbackend.customObj.FieldResponse;
 import lk.ijse.gdse68.greenshadowbackend.dao.FieldDAO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.FieldDTO;
+import lk.ijse.gdse68.greenshadowbackend.entity.impl.CropEntity;
 import lk.ijse.gdse68.greenshadowbackend.entity.impl.FieldEntity;
 import lk.ijse.gdse68.greenshadowbackend.exception.DataPersistFailedException;
 import lk.ijse.gdse68.greenshadowbackend.exception.FieldNotFound;
@@ -25,6 +26,7 @@ public class FieldServiceIMPL implements FieldService {
     @Autowired
     private Mapping mapping;
 
+    @Override
     public String generateNextId() {
         String lastId = fieldDAO.findLastId();
 
@@ -43,6 +45,10 @@ public class FieldServiceIMPL implements FieldService {
             fieldDTO.setField_code(generateNextId());
         }
         FieldEntity fieldEntity = mapping.convertToFieldEntity(fieldDTO);
+//
+//        List<CropEntity> crops = fieldEntity.getCrops();
+//        crops.size();
+
         FieldEntity save = fieldDAO.save(fieldEntity);
         if (save == null) {
             throw new DataPersistFailedException("Cannot Save Field");

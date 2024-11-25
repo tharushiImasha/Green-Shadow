@@ -110,36 +110,40 @@
             <h2>Crops</h2>
         </div>
 
-        <form action="">
+        <form id="crop_form">
 
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">Crop ID</label>
-                    <input type="text" placeholder="Enter crop common name">
+                    <input type="text" placeholder="Enter crop common name" id="crop_id">
                 </div>
             
                 <div class="inputs">
                     <label for="common">Crop Common Name</label>
-                    <input type="text" placeholder="Enter crop common name">
+                    <input type="text" placeholder="Enter crop common name" id="common_name">
+                    <span class="error" id="commonError"></span>
                 </div>
             </div>
 
             <div class="input-group">
                 <div class="inputs">
                     <label for="scientific">Crop Scientific Name</label>
-                    <input type="text" placeholder="Enter crop scientific name">
+                    <input type="text" placeholder="Enter crop scientific name" id="scientific_name">
+                    <span class="error" id="scientificError"></span>
                 </div>
 
                 <div class="inputs">
                     <label for="season">Crop Season</label>
-                    <input type="text" placeholder="Enter crop season name">
+                    <input type="text" placeholder="Enter crop season name" id="season">
+                    <span class="error" id="seasonError"></span>
                 </div>
             </div>
 
             <div class="input-group">       
                 <div class="inputs">
                     <label for="category">Crop Category</label>
-                    <input type="text" placeholder="Enter crop category">
+                    <input type="text" placeholder="Enter crop category" id="category">
+                    <span class="error" id="categoryError"></span>
                 </div>
 
                 <div class="inputs">
@@ -157,7 +161,7 @@
                 <div class="inputs">
                     <label for="image">Crop Image</label>
                     <div class="file-upload" onclick="document.getElementById('image').click();">Click to upload or drag and drop (Max Size 10MB)
-                        <img src="/assets/photo.png" alt="photo-icon">
+                        <img src="/assets/photo.png" alt="photo-icon" id="crop_image">
                     </div>
                     <input type="file" id="image" style="display:none;" accept="image/*" onchange="previewImage(event)">
                     <img id="imagePreview" class="file-preview" alt="Image Preview" style="display: none;">
@@ -165,7 +169,8 @@
             </div>
 
             <div class="btn-container">
-                <button type="button">Register</button>
+                <button type="submit" id="crop_add">Register</button>
+                <button type="button" id="crop_update"> Update </button>
             </div>
             
         </form>
@@ -217,52 +222,79 @@
             <h2>Fields</h2>
         </div>
 
-        <form action="">
+        <form id="field_form">
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">Field ID</label>
-                    <input type="text" placeholder="Enter field ID">
+                    <input type="text" placeholder="Enter field ID" id="field_id">
                 </div>
         
                 <div class="inputs">
                     <label for="name">Field Name</label>
-                    <input type="text" placeholder="Enter field name">
+                    <input type="text" placeholder="Enter field name" id="field_name">
+                    <span class="error" id="fieldNameError"></span>
                 </div>
             </div>
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="location">Field Location</label>
-                    <input type="text" placeholder="Enter field location">
+                    <div class="location_input">
+                        <input type="text" placeholder="Enter X coordinate" id="x_coordinate">
+                        <span class="error" id="xLocationError"></span>
+                        <input type="text" placeholder="Enter Y coordinate" id="y_coordinate">
+                        <span class="error" id="yLocationError"></span>
+                    </div>
+                    
                 </div>
         
                 <div class="inputs">
                     <label for="size">Extend Size of the Field</label>
-                    <input type="text" placeholder="Enter the field size">
+                    <input type="text" placeholder="Enter the field size" id="size">
+                    <span class="error" id="sizeError"></span>
                 </div>
             </div>
         
             <div class="input-group">
-                <div class="inputs">
+                <!-- <div class="inputs">
                     <label for="image1">Field Image 1</label>
                     <div class="file-upload" onclick="document.getElementById('field-image-1').click();">Click to upload or drag and
                         drop (Max Size 10MB)<img src="/assets/photo.png" alt="photo-icon"></div>
                     <input type="file" id="field-image-1" style="display:none;" accept="image/*" onchange="previewImage1(event)">
                     <img id="imagePreviewF1" class="file-preview" alt="Image Preview" style="display: none;">
+                </div> -->
+
+                <div class="inputs">
+                    <label for="image1">Field Image 1</label>
+                    <div class="file-upload" onclick="document.getElementById('field-image-1').click();">Click to upload or drag and
+                        drop (Max Size 10MB)<img src="/assets/photo.png" alt="photo-icon">
+                    </div>
+                    <input type="file" id="field-image-1" style="display:none;" accept="image/*" onchange="previewImage1(event)">
+                    <img id="imagePreviewF1" class="file-preview" alt="Image Preview" style="display: none;">
                 </div>
+
+                <!-- <div class="inputs">
+                    <label for="image2">Field Image 2</label>
+                    <div class="file-upload" onclick="document.getElementById('field-image-2').click();">Click to upload or drag and
+                        drop (Max Size 10MB) <img src="/assets/photo.png" alt="photo-icon"></div>
+                    <input type="file" id="field-image-2" style="display:none;" accept="image/*" onchange="previewImage2(event)">
+                    <img id="imagePreviewF2" class="file-preview" alt="Image Preview" style="display: none;">
+                </div> -->
 
                 <div class="inputs">
                     <label for="image2">Field Image 2</label>
                     <div class="file-upload" onclick="document.getElementById('field-image-2').click();">Click to upload or drag and
-                        drop (Max Size 10MB) <img src="/assets/photo.png" alt="photo-icon"></div>
+                        drop (Max Size 10MB)<img src="/assets/photo.png" alt="photo-icon">
+                    </div>
                     <input type="file" id="field-image-2" style="display:none;" accept="image/*" onchange="previewImage2(event)">
                     <img id="imagePreviewF2" class="file-preview" alt="Image Preview" style="display: none;">
                 </div>
             </div>
         
             <div class="btn-container">
-                <button type="button">Register</button>
+                <button type="submit" id="field_add">Register</button>
+                <button type="button" id="field_update">Update</button>
             </div>
         
         </form>
@@ -271,7 +303,7 @@
         
             <div class="field-table-div">
         
-                <table class="table table-hover" id="field-table">
+                <table class="table table-hover" id="field_table">
                     <thead>
                         <tr>
                             <th scope="col">Field ID</th>
@@ -329,29 +361,29 @@
             <h2>Staff</h2>
         </div>
 
-        <form action="">
+        <form id="staff_form">
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">ID</label>
-                    <input type="text" placeholder="Enter crop common name">
+                    <input type="text" placeholder="Enter crop id" id="staff_id">
                 </div>
         
                 <div class="inputs">
                     <label for="email">Email</label>
-                    <input type="email" placeholder="Enter crop common name">
+                    <input type="email" placeholder="Enter the email" id="email">
                 </div>
             </div>
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="firstName">First Name</label>
-                    <input type="text" placeholder="Enter crop scientific name">
+                    <input type="text" placeholder="Enter the first name" id="first_name">
                 </div>
         
                 <div class="inputs">
                     <label for="lastName">Last Name</label>
-                    <input type="text" placeholder="Enter crop season name">
+                    <input type="text" placeholder="Enter the last name" id="last_name">
                 </div>
             </div>
         
@@ -368,7 +400,7 @@
 
                 <div class="inputs">
                     <label for="contact">Contact Number</label>
-                    <input type="text" placeholder="Enter crop category">
+                    <input type="text" placeholder="Enter a contact number" id="contact">
                 </div>
             </div>
 
@@ -376,11 +408,11 @@
                 <div class="inputs">
                     <label for="address">Address</label>
                     <div class="address-input">
-                        <input type="text" placeholder="Line 1">
-                        <input type="text" placeholder="Line 1">
-                        <input type="text" placeholder="Line 1">
-                        <input type="text" placeholder="Line 1">
-                        <input type="text" placeholder="Line 1">
+                        <input type="text" placeholder="House NO" id="line_1">
+                        <input type="text" placeholder="Street Name" id="line_2">
+                        <input type="text" placeholder="Area" id="line_3">
+                        <input type="text" placeholder="City" id="line_4">
+                        <input type="text" placeholder="Country" id="line_5">
                     </div>
                     
                 </div>
@@ -389,7 +421,7 @@
             <div class="input-group">
                 <div class="inputs">
                     <label for="joineddate">Joined Date</label>
-                    <input type="date" placeholder="Select joined date">
+                    <input type="date" placeholder="Select joined date" id="joined_date">
                 </div>
             
                 <div class="inputs">
@@ -437,7 +469,7 @@
         
             <div class="staff-table-div">
         
-                <table class="table table-hover" id="staff-table">
+                <table class="table table-hover" id="staff_table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -765,10 +797,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <script src="/js/validation/allValidation.js"></script>
+
     <script src="/js/dashboard.js"></script>
     <script src="/js/crops.js"></script>
     <script src="/js/field.js"></script>
     <script src="/js/log.js"></script>
+    <script src="/js/vehicle.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
