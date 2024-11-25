@@ -1,3 +1,10 @@
+$(document).ready(function() {
+    $('#field-crop').select2({
+        dropdownCssClass: 'custom-dropdown', // Custom class for dropdown styling
+        minimumResultsForSearch: Infinity // Hides the search box for small lists
+    });
+});
+
 function previewImage(event) {
     const imagePreview = document.getElementById('imagePreview');
     const file = event.target.files[0];
@@ -112,6 +119,7 @@ function fetchNextCropId() {
 $(document).ready(function () {
     fetchNextCropId();
     fetchCrops(); 
+    populateFieldDropdown();
 });
 
 cropForm.addEventListener('submit', (event) => {
@@ -259,3 +267,27 @@ document.querySelector('#crop_update').onclick = function() {
     document.getElementById("crop_add").style.display = "block";
     itemForm.reset(); 
 };
+
+function populateFieldDropdown() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/field", // Your endpoint
+        type: "GET",
+        headers: { "Content-Type": "application/json" },
+        success: function(res) {
+            const fieldDropdown = $("#field-crop");
+            fieldDropdown.empty(); // Clear existing options
+            fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
+
+            res.forEach(field => {
+                const option = `<option value="${field.field_code}">${field.field_code}</option>`;
+                fieldDropdown.append(option);
+            });
+
+            // Reinitialize Select2 after dynamically adding options
+            fieldDropdown.trigger('change');
+        },
+        error: function(err) {
+            console.error('Failed to fetch fields:', err);
+        }
+    });
+}

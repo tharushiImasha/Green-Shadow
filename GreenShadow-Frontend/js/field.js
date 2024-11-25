@@ -165,6 +165,8 @@ fieldForm.addEventListener('submit', (event) => {
         });
 
         fieldForm.reset();
+        document.getElementById('imagePreviewF1').style.display = "none"
+        document.getElementById('imagePreviewF2').style.display  = "none"
     }
 });
 
@@ -181,12 +183,24 @@ function buildFieldTable(allFields){
             ? `x : ${element.location.x},  y : ${element.location.y}` 
             : 'N/A';
 
+        const image1 = element.image_1 
+            ? `<img src="data:image/jpeg;base64,${element.image_1}" alt="Field Image" style="width: 100px; height: 100px;">` 
+            : 'No Image';
+
+        const image2 = element.image_2 
+            ? `<img src="data:image/jpeg;base64,${element.image_2}" alt="Field Image 2" style="width: 100px; height: 100px;">` 
+            : 'No Image 2';
+
+        // Combine the images for display
+        const images = `<div style="display: flex; gap: 8px;">${image1}${image2}</div>`;
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${element.field_code}</td>
             <td>${element.field_name}</td>
             <td>${location}</td>
             <td>${element.extent_size}</td>
+            <td>${images}</td>
             <td class = "actionBtn">
                 <button onclick="deleteFieldData('${element.field_code}')" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 <button onclick='populateFieldForm(${JSON.stringify(element)})' class="btn btn-warning m-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
@@ -360,5 +374,7 @@ document.querySelector('#field_update').onclick = function() {
 
     document.getElementById("field_update").style.display = "none";
     document.getElementById("field_add").style.display = "block";
+    document.getElementById('imagePreviewF1').style.display = "none"
+    document.getElementById('imagePreviewF2').style.display = "none"
     fieldForm.reset(); 
 };
