@@ -24,18 +24,17 @@ const cropTableBody = document.getElementById("crop-table").querySelector('tbody
 
 document.getElementById("crop_update").style.display = "none"
 
-function validateForm(){
+function validateCropForm(){
     let commonName = document.getElementById("common_name").value;
     let scientificName = document.getElementById("scientific_name").value;
     let season = document.getElementById("season").value;
     let category = document.getElementById("category").value;
-    // let image = document.getElementById("crop_image").value;
 
     if(commonName == ""){
         $("#commonError").text("Please enter crop common name");
         $("#common_name").css("border-color",  "red");
         return false;
-    }else if (!(regexName.test($("#common_name").val()))){
+    }else if (!(cropRegex.test($("#common_name").val()))){
         $("#commonError").text("Please enter valid name");
         $("#common_name").css("border-color",  "red");
         return false;
@@ -48,7 +47,7 @@ function validateForm(){
         $("#scientificError").text("Please enter crop scientific name");
         $("#scientific_name").css("border-color",  "red");
         return false;
-    }else if (!(regexName.test($("#common_name").val()))){
+    }else if (!(cropRegex.test($("#scientific_name").val()))){
         $("#scientificError").text("Please enter valid name");
         $("#scientific_name").css("border-color",  "red");
         return false;
@@ -61,7 +60,7 @@ function validateForm(){
         $("#seasonError").text("Please enter crop season");
         $("#season").css("border-color",  "red");
         return false;
-    }else if (!(regexName.test($("#common_name").val()))){
+    }else if (!(cropRegex.test($("#season").val()))){
         $("#seasonError").text("Please enter valid season");
         $("#season").css("border-color",  "red");
         return false;
@@ -74,7 +73,7 @@ function validateForm(){
         $("#categoryError").text("Please enter crop category");
         $("#category").css("border-color",  "red");
         return false;
-    }else if (!(regexName.test($("#common_name").val()))){
+    }else if (!(cropRegex.test($("#category").val()))){
         $("#categoryError").text("Please enter valid category");
         $("#category").css("border-color",  "red");
         return false;
@@ -116,22 +115,37 @@ function fetchNextCropId() {
     });
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
+    $('#field-crop').select2({
+        dropdownCssClass: 'custom-dropdown', 
+        minimumResultsForSearch: Infinity 
+    });
+
+    $('#field-crop').on('change', function() {
+        let selectedValue = $(this).val();
+        console.log('Selected field code:', selectedValue);
+    });
+
     fetchNextCropId();
     fetchCrops(); 
     populateFieldDropdown();
 });
 
+document.getElementById("field-crop").addEventListener("change", function() {
+    let selectedValue = this.value;
+    console.log(selectedValue); // Log the selected value
+});
+
 cropForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    if(validateForm()) {
+    if(validateCropForm()) {
         let commonName = document.getElementById("common_name").value;
         let scientificName = document.getElementById("scientific_name").value;
         let season = document.getElementById("season").value;
         let category = document.getElementById("category").value;
-        let image = document.getElementById("crop_image").files[0];
-        let fieldCode = document.getElementById("field").value;
+        let image = document.getElementById("image").files[0];
+        let fieldCode = document.getElementById("field-crop").value;
 
         const formData = new FormData();
         formData.append("common_name", commonName);
@@ -151,6 +165,7 @@ cropForm.addEventListener('submit', (event) => {
                 console.log(JSON.stringify(res));
                 document.getElementById("crop_id").value = res.crop_code;
                 fetchCrops();
+                fetchNextCropId();
             },
             error: (res) => {
                 console.error(res);
@@ -158,6 +173,7 @@ cropForm.addEventListener('submit', (event) => {
         });
 
         cropForm.reset();
+        document.getElementById('imagePreview').style.display = "none"
     }
 });
 
@@ -170,13 +186,18 @@ function buildCropTable(allCrops){
 
     cropTableBody.innerHTML = '';
     allCrops.forEach(function (element) {
+        const image = element.crop_image
+            ? `<img src="data:image/jpeg;base64,${element.crop_image}" alt="Crop Image" style="width: 100px; height: 100px;">` 
+            : 'No Image';
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${element.crop_code}</td>
             <td>${element.common_name}</td>
             <td>${element.specific_name}</td>
-            <td>${element.category}</td>
             <td>${element.crop_season}</td>
+            <td>${element.category}</td>
+            <td>${image}</td>
             <td>${element.field_code}</td>
             <td class = "actionBtn">
                 <button onclick="deleteCropData('${element.crop_code}')" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -213,11 +234,31 @@ function populateCropForm(crop) {
     document.getElementById('scientific_name').value = crop.specific_name;
     document.getElementById('season').value = crop.crop_season;
     document.getElementById('category').value = crop.category;
-    document.getElementById('field').value = crop.field_code;
-    document.getElementById('crop_image').files[0] = crop.crop_image;
+
+    $('#field-crop').val(crop.field_code).trigger('change');
+
+    console.log(crop.field_code)
+    
+    if (crop.crop_image) {
+        const imagePreview = document.getElementById('imagePreview');
+        const mimeTypeC = getMimeType(crop.crop_image);
+
+        imagePreview.src = `data:${mimeTypeC};base64,${crop.crop_image}`;
+        imagePreview.style.display = 'block';
+
+        const file = base64ToFile(crop.crop_image, mimeTypeC, 'image.' + mimeTypeC.split('/')[1]);
+        setFileToInputCrop(file);
+    }
 
     document.getElementById("crop_update").style.display = "block"
     document.getElementById("crop_add").style.display = "none"
+}
+
+function setFileToInputCrop(file) {
+    const fileInput = document.getElementById('image'); 
+    const dataTransfer = new DataTransfer(); 
+    dataTransfer.items.add(file); 
+    fileInput.files = dataTransfer.files; 
 }
 
 document.querySelector('#crop_update').onclick = function() {
@@ -226,19 +267,22 @@ document.querySelector('#crop_update').onclick = function() {
     let scientificName = document.getElementById("scientific_name").value;
     let season = document.getElementById("season").value;
     let category = document.getElementById("category").value;
-    let image = document.getElementById("crop_image").files[0];
-    let fieldCode = document.getElementById("field").value;
+    let imageC = document.getElementById("image").files[0];
+    let fieldCode = document.getElementById("field-crop").value;
 
     const formData = new FormData(); 
     formData.append('crop_code', crop_id);
     formData.append('common_name', commonName);
     formData.append('specific_name', scientificName);
-    formData.append('season', season);
+    formData.append('crop_season', season);
     formData.append('category', category);
     formData.append('field_code', fieldCode);
-
-    if (image) {
-        formData.append('crop_image', image);
+    
+    if (imageC) {
+        formData.append('crop_image', imageC);         
+    } else {
+        const existingImageSrc = document.getElementById('imagePreview').src;
+        formData.append('crop_image', existingImageSrc); // Use existing image
     }
 
     $.ajax({
@@ -265,7 +309,8 @@ document.querySelector('#crop_update').onclick = function() {
 
     document.getElementById("crop_update").style.display = "none";
     document.getElementById("crop_add").style.display = "block";
-    itemForm.reset(); 
+    document.getElementById('imagePreview').style.display = "none"
+    cropForm.reset(); 
 };
 
 function populateFieldDropdown() {
@@ -291,3 +336,37 @@ function populateFieldDropdown() {
         }
     });
 }
+
+$("#crop_search").keydown(function (e) {
+    if (e.keyCode == 13) {  
+        let id = document.getElementById("crop_search").value;
+
+        if (id) {
+            $.ajax({
+                url: `http://localhost:8080/greenShadow/api/v1/crop/${id}`,
+                type: "GET",
+                headers: { "Content-Type": "application/json" },
+                success: function(crop) {
+                    if (crop && crop.crop_code) { 
+                        populateCropForm(crop);
+                    } else {
+                        console.warn("Crop not found.");
+                        alert("Crop ID not found!"); 
+                        cropForm.reset();  
+                        fetchNextCropId();  
+                    }
+                },
+                error: function(err) {
+                    console.error('Error fetching crop:', err);
+                    alert("Invalid Crop ID! Please enter a valid ID."); 
+                    cropForm.reset();  
+                    fetchNextCropId();  
+                }
+            });
+        } else {
+            alert("Search crop cannot be empty!");
+            cropForm.reset(); 
+            fetchNextCropId();  
+        }
+    }
+});

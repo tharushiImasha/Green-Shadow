@@ -378,3 +378,37 @@ document.querySelector('#field_update').onclick = function() {
     document.getElementById('imagePreviewF2').style.display = "none"
     fieldForm.reset(); 
 };
+
+$("#search_field").keydown(function (e) {
+    if (e.keyCode == 13) {  
+        let id = document.getElementById("search_field").value;
+
+        if (id) {
+            $.ajax({
+                url: `http://localhost:8080/greenShadow/api/v1/field/${id}`,
+                type: "GET",
+                headers: { "Content-Type": "application/json" },
+                success: function(field) {
+                    if (field && field.field_code) { 
+                        populateFieldForm(field);
+                    } else {
+                        console.warn("Field not found.");
+                        alert("Field ID not found!"); 
+                        fieldForm.reset();  
+                        fetchNextFieldId();  
+                    }
+                },
+                error: function(err) {
+                    console.error('Error fetching field:', err);
+                    alert("Invalid Field ID! Please enter a valid ID."); 
+                    fieldForm.reset();  
+                    fetchNextFieldId();  
+                }
+            });
+        } else {
+            alert("Search field cannot be empty!");
+            fieldForm.reset(); 
+            fetchNextFieldId();  
+        }
+    }
+});

@@ -3,8 +3,10 @@ package lk.ijse.gdse68.greenshadowbackend.service.impl;
 import lk.ijse.gdse68.greenshadowbackend.customObj.CropErrorResponse;
 import lk.ijse.gdse68.greenshadowbackend.customObj.CropResponse;
 import lk.ijse.gdse68.greenshadowbackend.dao.CropDAO;
+import lk.ijse.gdse68.greenshadowbackend.dao.FieldDAO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.CropDTO;
 import lk.ijse.gdse68.greenshadowbackend.entity.impl.CropEntity;
+import lk.ijse.gdse68.greenshadowbackend.entity.impl.FieldEntity;
 import lk.ijse.gdse68.greenshadowbackend.exception.DataPersistFailedException;
 import lk.ijse.gdse68.greenshadowbackend.exception.FieldNotFound;
 import lk.ijse.gdse68.greenshadowbackend.service.CropService;
@@ -22,6 +24,8 @@ public class CropServiceIMPL implements CropService {
 
     @Autowired
     private CropDAO cropDAO;
+    @Autowired
+    private FieldDAO fieldDAO;
     @Autowired
     private Mapping mapping;
 
@@ -63,7 +67,13 @@ public class CropServiceIMPL implements CropService {
             tmpCrop.get().setCrop_image(cropDTO.getCrop_image());
             tmpCrop.get().setCategory(cropDTO.getCategory());
             tmpCrop.get().setCrop_season(cropDTO.getCrop_season());
-//            tmpCrop.get().setField(cropDTO.getField_code());
+
+            FieldEntity field = fieldDAO.getReferenceById(cropDTO.getField_code());
+            if (field == null) {
+                throw new FieldNotFound("Field not found");
+            }else {
+                tmpCrop.get().setField(field);
+            }
         }
     }
 

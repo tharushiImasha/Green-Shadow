@@ -47,7 +47,7 @@
     <main class="content" id="dashboard">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search plant here...">
+                <input type="text" placeholder="Search plant here..." id="dash_serach">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
 
@@ -94,7 +94,7 @@
     <main class="content" id="crops">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search plant here...">
+                <input type="text" placeholder="Search plant here..." id="crop_search">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
     
@@ -159,7 +159,7 @@
                 <div class="inputs">
                     <label for="image">Crop Image</label>
                     <div class="file-upload" onclick="document.getElementById('image').click();">Click to upload or drag and drop (Max Size 10MB)
-                        <img src="/assets/photo.png" alt="photo-icon" id="crop_image">
+                        <img src="/assets/photo.png" alt="photo-icon">
                     </div>
                     <input type="file" id="image" style="display:none;" accept="image/*" onchange="previewImage(event)">
                     <img id="imagePreview" class="file-preview" alt="Image Preview" style="display: none;">
@@ -185,6 +185,7 @@
                             <th scope="col">Scientific Name</th>
                             <th scope="col">Season</th>
                             <th scope="col">Category</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Field</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -203,7 +204,7 @@
     <main class="content" id="fields">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search field here...">
+                <input type="text" placeholder="Search field here..." id="search_field">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
     

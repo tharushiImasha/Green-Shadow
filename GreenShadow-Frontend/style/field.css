@@ -55,3 +55,8 @@
     font-weight: bold;
     margin-top: 20px;
 }
+
+.error{
+    font-size: 11px;
+    color: rgba(255, 0, 0, 0.692);
+}

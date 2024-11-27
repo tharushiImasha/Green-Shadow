@@ -7,3 +7,5 @@ const fieldRegex = /^[A-Za-z]+( [A-Za-z]+)*$/;
 const pointRegex = /^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/;
 const locationRegex = /^\d+(\.\d+)?$/;
 const sizeRegex = /^\d+(\.\d+)?$/;
+
+const cropRegex = /^[a-zA-Z0-9\s-]+$/; 

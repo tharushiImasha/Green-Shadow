@@ -31,6 +31,10 @@ form{
     margin-bottom: 10px;
 }
 
+input:focus{
+    background-color: transparent;
+}
+
 .inputs input,
 .file-upload,
 #field{
@@ -48,6 +52,59 @@ form{
     color: rgba(0, 0, 0, 0.3);
     font-size: 10px;
 }
+
+/* Ensure autofilled fields have transparent background and no blue color */
+.inputs input:-webkit-autofill {
+    background-color: transparent !important;
+    /* Keep background transparent */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    /* Border remains as defined */
+    -webkit-text-fill-color: black !important;
+    /* Ensure text color is black */
+    box-shadow: none !important;
+    /* Remove the shadow */
+}
+
+/* Ensure autofilled fields don't get a blue background or box shadow on focus */
+.inputs input:-webkit-autofill:focus,
+.inputs input:-webkit-autofill:active,
+.inputs input:-webkit-autofill:hover {
+    background-color: transparent !important;
+    /* No blue on focus */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    /* Border remains unchanged */
+    -webkit-text-fill-color: black !important;
+    /* Keep the text color black */
+    box-shadow: none !important;
+    /* Remove box-shadow */
+}
+
+/* Firefox autofill reset */
+.inputs input:-moz-autofill {
+    background-color: transparent !important;
+    /* Transparent background */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    /* Keep border consistent */
+    -moz-text-fill-color: black !important;
+    /* Keep text color black */
+    box-shadow: none !important;
+    /* No shadow */
+}
+
+/* Firefox autofill on focus and hover */
+.inputs input:-moz-autofill:focus,
+.inputs input:-moz-autofill:active,
+.inputs input:-moz-autofill:hover {
+    background-color: transparent !important;
+    /* Keep it transparent */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    /* No change to border */
+    -moz-text-fill-color: black !important;
+    /* No color change */
+    box-shadow: none !important;
+    /* No shadow */
+}
+
 
 .file-upload {
     color: rgba(0, 0, 0, 0.3);
