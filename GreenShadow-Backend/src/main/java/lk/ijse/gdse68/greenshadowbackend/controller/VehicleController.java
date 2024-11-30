@@ -17,11 +17,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/vehicle")
 @RequiredArgsConstructor
-
+@CrossOrigin
 public class VehicleController {
 
     @Autowired
     private final VehicleService vehicleService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextId() {
+        String nextId = vehicleService.generateNextId();
+        return ResponseEntity.ok(nextId);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveVehicle(@RequestBody VehicleDTO vehicleDTO){

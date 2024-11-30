@@ -31,6 +31,7 @@ public class VehicleServiceIMPL implements VehicleService {
     @Autowired
     private Mapping mapping;
 
+    @Override
     public String generateNextId() {
         String lastId = vehicleDAO.findLastId();
 

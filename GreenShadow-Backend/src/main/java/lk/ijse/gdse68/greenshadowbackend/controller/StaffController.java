@@ -24,7 +24,7 @@ public class StaffController {
     private final StaffService staffService;
 
     @GetMapping("/next-id")
-    public ResponseEntity<String> getNextCropId() {
+    public ResponseEntity<String> getNextId() {
         String nextId = staffService.generateNextId();
         return ResponseEntity.ok(nextId);
     }

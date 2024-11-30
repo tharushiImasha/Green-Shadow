@@ -316,7 +316,7 @@ document.querySelector('#crop_update').onclick = function() {
 
 function populateFieldDropdown() {
     $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/field", // Your endpoint
+        url: "http://localhost:8080/greenShadow/api/v1/field", 
         type: "GET",
         headers: { "Content-Type": "application/json" },
         success: function(res) {

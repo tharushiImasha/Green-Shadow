@@ -471,7 +471,7 @@
     <main class="content" id="vehicles">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search vehicle here...">
+                <input type="text" placeholder="Search vehicle here..." id="vehicle_search">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
     
@@ -488,29 +488,32 @@
             <h2>Vehicles</h2>
         </div>
 
-        <form action="">
+        <form id="vehicle_form">
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">Vehicle ID</label>
-                    <input type="text" placeholder="Enter vehicle Id">
+                    <input type="text" placeholder="Enter vehicle Id" id="vehicle_id">
                 </div>
         
                 <div class="inputs">
                     <label for="plateNo">License Plate Number</label>
-                    <input type="text" placeholder="Enter license plate number">
+                    <input type="text" placeholder="Enter license plate number" id="license">
+                    <span class="error" id="licenceError"></span>
                 </div>
             </div>
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="category">Vehicle Category</label>
-                    <input type="text" placeholder="Enter vehicle category">
+                    <input type="text" placeholder="Enter vehicle category" id="vehicle_category">
+                    <span class="error" id="vehiCategoryError"></span>
                 </div>
         
                 <div class="inputs">
                     <label for="fuelType">Fuel Type</label>
-                    <input type="text" placeholder="Enter the fuel type">
+                    <input type="text" placeholder="Enter the fuel type" id="fuel_type">
+                    <span class="error" id="fuelError"></span>
                 </div>
             </div> 
         
@@ -520,22 +523,21 @@
                     <div>
                         <select class="form-select form-select-sm" id="vehicle-staff">
                             <option selected>Select the staff member</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                         </select>
                     </div>
+                    <span class="error" id="vehiStaffError"></span>
                     
                 </div>
             
                 <div class="inputs">
                     <label for="remark">Remark</label>
-                    <input type="text" placeholder="Enter special remark if you have">
+                    <input type="text" placeholder="Enter special remark if you have" id="remark">
                 </div>
             </div>
         
             <div class="btn-container">
-                <button type="button">Register</button>
+                <button type="submit" id="vehicle_add">Register</button>
+                <button type="button" id="vehicle_update">Update</button>
             </div>
         
         </form>
@@ -544,13 +546,15 @@
         
             <div class="field-table">
         
-                <table class="table table-hover" id="crop-table">
+                <table class="table table-hover" id="vehicle_table">
                     <thead>
                         <tr>
                             <th scope="col">Vehicle ID</th>
-                            <th scope="col">FLicense Plate Number</th>
+                            <th scope="col">License Plate Number</th>
                             <th scope="col">Category</th>
                             <th scope="col">Fuel Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Remark</th>
                             <th scope="col">Staff Member</th>
                             <th scope="col">Action</th>
                         </tr>

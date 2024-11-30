@@ -27,7 +27,7 @@ public class FieldController {
     private final FieldService fieldService;
 
     @GetMapping("/next-id")
-    public ResponseEntity<String> getNextCropId() {
+    public ResponseEntity<String> getNextId() {
         String nextId = fieldService.generateNextId();
         return ResponseEntity.ok(nextId);
     }

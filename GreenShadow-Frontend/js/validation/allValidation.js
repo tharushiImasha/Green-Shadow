@@ -10,3 +10,5 @@ const locationRegex = /^\d+(\.\d+)?$/;
 const sizeRegex = /^\d+(\.\d+)?$/;
 
 const cropRegex = /^[a-zA-Z0-9\s-]+$/; 
+
+const licenseRegex = /^[A-Z]{2,3}[-\s]?\d{4}$/;
