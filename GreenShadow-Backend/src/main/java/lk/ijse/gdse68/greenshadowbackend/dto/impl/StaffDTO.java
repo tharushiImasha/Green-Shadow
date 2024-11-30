@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -29,8 +29,8 @@ public class StaffDTO implements SuperDTO, StaffResponse {
     private String designation;
     private Role role;
     private Gender gender;
-    private Date dob;
-    private Date joined_date;
+    private LocalDate dob;
+    private LocalDate joined_date;
     private List<VehicleDTO> vehicleDTOS;
     private List<FieldDTO> fieldDTOS;
     private List<LogsDTO> logsDTOS;

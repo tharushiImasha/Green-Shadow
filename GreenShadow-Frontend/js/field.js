@@ -165,13 +165,11 @@ fieldForm.addEventListener('submit', (event) => {
         });
 
         fieldForm.reset();
-        document.getElementById('imagePreviewF1').style.display = "none"
-        document.getElementById('imagePreviewF2').style.display  = "none"
+        clearFieldForm();
     }
 });
 
 function buildFieldTable(allFields){
-
     if (!Array.isArray(allFields)) {
         console.error('Expected an array but got:', allFields);
         return;
@@ -220,6 +218,8 @@ function deleteFieldData(id) {
                 console.log('Delete Response:', res);
                 fetchNextFieldId();
                 fetchFields();
+                fieldForm.reset();
+                clearFieldForm();
             },
             error: function(err) {
                 console.error('Failed to delete field:', err);
@@ -374,9 +374,8 @@ document.querySelector('#field_update').onclick = function() {
 
     document.getElementById("field_update").style.display = "none";
     document.getElementById("field_add").style.display = "block";
-    document.getElementById('imagePreviewF1').style.display = "none"
-    document.getElementById('imagePreviewF2').style.display = "none"
     fieldForm.reset(); 
+    clearFieldForm();
 };
 
 $("#search_field").keydown(function (e) {
@@ -412,3 +411,8 @@ $("#search_field").keydown(function (e) {
         }
     }
 });
+
+function clearFieldForm() {
+    document.getElementById('imagePreviewF1').style.display = "none"
+    document.getElementById('imagePreviewF2').style.display = "none"
+}

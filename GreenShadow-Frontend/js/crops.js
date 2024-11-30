@@ -133,7 +133,7 @@ $(document).ready(function() {
 
 document.getElementById("field-crop").addEventListener("change", function() {
     let selectedValue = this.value;
-    console.log(selectedValue); // Log the selected value
+    console.log(selectedValue); 
 });
 
 cropForm.addEventListener('submit', (event) => {
@@ -173,7 +173,7 @@ cropForm.addEventListener('submit', (event) => {
         });
 
         cropForm.reset();
-        document.getElementById('imagePreview').style.display = "none"
+        clearCropForm();
     }
 });
 
@@ -217,6 +217,7 @@ function deleteCropData(id) {
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchCrops();
+                fetchNextCropId();
             },
             error: function(err) {
                 console.error('Failed to delete crop:', err);
@@ -282,7 +283,7 @@ document.querySelector('#crop_update').onclick = function() {
         formData.append('crop_image', imageC);         
     } else {
         const existingImageSrc = document.getElementById('imagePreview').src;
-        formData.append('crop_image', existingImageSrc); // Use existing image
+        formData.append('crop_image', existingImageSrc); 
     }
 
     $.ajax({
@@ -309,8 +310,8 @@ document.querySelector('#crop_update').onclick = function() {
 
     document.getElementById("crop_update").style.display = "none";
     document.getElementById("crop_add").style.display = "block";
-    document.getElementById('imagePreview').style.display = "none"
     cropForm.reset(); 
+    clearCropForm();
 };
 
 function populateFieldDropdown() {
@@ -320,7 +321,7 @@ function populateFieldDropdown() {
         headers: { "Content-Type": "application/json" },
         success: function(res) {
             const fieldDropdown = $("#field-crop");
-            fieldDropdown.empty(); // Clear existing options
+            fieldDropdown.empty(); 
             fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
 
             res.forEach(field => {
@@ -328,7 +329,6 @@ function populateFieldDropdown() {
                 fieldDropdown.append(option);
             });
 
-            // Reinitialize Select2 after dynamically adding options
             fieldDropdown.trigger('change');
         },
         error: function(err) {
@@ -370,3 +370,8 @@ $("#crop_search").keydown(function (e) {
         }
     }
 });
+
+function clearCropForm() {
+    $('#field-crop').val('').trigger('change'); 
+    document.getElementById('imagePreview').style.display = "none";
+}

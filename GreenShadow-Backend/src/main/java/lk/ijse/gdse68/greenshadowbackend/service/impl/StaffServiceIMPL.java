@@ -24,6 +24,7 @@ public class StaffServiceIMPL implements StaffService {
     @Autowired
     private Mapping mapping;
 
+    @Override
     public String generateNextId() {
         String lastId = staffDAO.findLastId();
 

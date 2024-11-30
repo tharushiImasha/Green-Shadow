@@ -92,3 +92,11 @@ input[type="date"]::placeholder {
 ::-ms-input-placeholder {
     color: rgba(0, 0, 0, 0.3);
 }
+
+#staff_table th{
+    font-size: 14px !important;
+}
+
+#staff_table tbody {
+    font-size: 12px !important;
+}

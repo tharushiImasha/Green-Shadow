@@ -17,10 +17,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/staff")
 @RequiredArgsConstructor
+@CrossOrigin
 public class StaffController {
 
     @Autowired
     private final StaffService staffService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextCropId() {
+        String nextId = staffService.generateNextId();
+        return ResponseEntity.ok(nextId);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){

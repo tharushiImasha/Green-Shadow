@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.greenshadowbackend.entity.impl;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.EquipmentDTO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.FieldDTO;
@@ -12,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -39,8 +40,10 @@ public class StaffEntity implements SuperEntity {
     private Role role;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private Date dob;
-    private Date joined_date;
+    @JsonFormat(pattern = "MM-dd-yyyy")
+    private LocalDate dob;
+    @JsonFormat(pattern = "MM-dd-yyyy")
+    private LocalDate joined_date;
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     private List<VehicleEntity> vehicles;
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
