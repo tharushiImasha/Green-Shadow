@@ -670,7 +670,7 @@
     <main class="content" id="logs">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search log here...">
+                <input type="text" placeholder="Search log here..." id="log_search">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
     
@@ -687,21 +687,56 @@
             <h2>Logs</h2>
         </div>
 
-        <form action="">
+        <form id="log_form">
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">Log ID</label>
-                    <input type="text" placeholder="Enter crop common name">
+                    <input type="text" placeholder="Enter crop common name" id="log_code">
                 </div>
         
                 <div class="inputs">
                     <label for="date">Date</label>
-                    <input type="date" placeholder="Enter the date">
+                    <input type="date" placeholder="Enter the date" id="log_date">
+                    <span class="error" id="logDateError"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="inputs">
+                    <label for="field">Field</label>
+                    <div>
+                        <select class="form-select form-select-sm" id="log_field">
+                            <option selected>Select the field</option>
+                        </select>
+                    </div>
+                    <span class="error" id="logFieldError"></span>
+                
+                </div>
+            
+                <div class="inputs">
+                    <label for="crop">Crop</label>
+                    <div>
+                        <select class="form-select form-select-sm" id="log_crop">
+                            <option selected>Select the crop</option>
+                        </select>
+                    </div>
+                    <span class="error" id="logCropError"></span>
+                
                 </div>
             </div>
         
             <div class="input-group">
+                <div class="inputs">
+                    <label for="staff">Staff</label>
+                    <div>
+                        <select class="form-select form-select-sm" id="log_staff">
+                            <option selected>Select the staff member</option>
+                        </select>
+                    </div>
+                    <span class="error" id="logstaffError"></span>
+                </div>
+
                 <div class="inputs">
                     <label for="image1">Observed Image</label>
                     <div class="file-upload" onclick="document.getElementById('log-image').click();">Click to upload or drag and
@@ -709,15 +744,19 @@
                     <input type="file" id="log-image" style="display:none;" accept="image/*" onchange="previewImageLog(event)">
                     <img id="imagePreviewLogImage" class="file-preview" alt="Image Preview" style="display: none;">
                 </div>
+            </div>
 
+            <div class="input-group">
                 <div class="inputs">
                     <label for="detail">Detail</label>
-                    <input type="text" placeholder="Enter log detail">
+                    <input type="text" placeholder="Enter log detail" id="log_detail">
+                    <span class="error" id="logDetailError"></span>
                 </div>
             </div>
         
             <div class="btn-container">
-                <button type="button">Register</button>
+                <button type="submit" id="log_add">Register</button>
+                <button type="button" id="log_update">Update</button>
             </div>
         
         </form>
@@ -726,12 +765,16 @@
         
             <div class="log-table-div">
         
-                <table class="table table-hover" id="log-table">
+                <table class="table table-hover" id="log_table">
                     <thead>
                         <tr>
                             <th scope="col">Log ID</th>
                             <th scope="col">Date</th>
                             <th scope="col">Detail</th>
+                            <th scope="col">Crop</th>
+                            <th scope="col">Staff</th>
+                            <th scope="col">Field</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

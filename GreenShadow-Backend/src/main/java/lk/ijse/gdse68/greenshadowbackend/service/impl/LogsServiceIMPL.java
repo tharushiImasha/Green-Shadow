@@ -33,6 +33,7 @@ public class LogsServiceIMPL implements LogsService {
     @Autowired
     private CropDAO cropDAO;
 
+    @Override
     public String generateNextId() {
         String lastId = logsDAO.findLastId();
 

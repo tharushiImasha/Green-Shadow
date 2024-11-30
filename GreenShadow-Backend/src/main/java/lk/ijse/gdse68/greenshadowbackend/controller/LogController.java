@@ -19,9 +19,16 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/log")
 @RequiredArgsConstructor
+@CrossOrigin
 public class LogController {
     @Autowired
     private final LogsService logsService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextId() {
+        String nextId = logsService.generateNextId();
+        return ResponseEntity.ok(nextId);
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> saveLog(

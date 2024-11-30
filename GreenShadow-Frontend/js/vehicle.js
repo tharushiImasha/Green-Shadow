@@ -16,18 +16,20 @@ function validateVehicleForm(){
     let fuel_type = document.getElementById("fuel_type").value;
     let vehicleStaff = document.getElementById("vehicle-staff").value;
 
-    // if(license == ""){
-    //     $("#licenceError").text("Please enter vehicle license plate number");
-    //     $("#license").css("border-color",  "red");
-    //     return false;
-    // }else if (!(licenseRegex.test($("#licence").val()))){
-    //     $("#licenceError").text("Please enter valid license plate number");
-    //     $("#license").css("border-color",  "red");
-    //     return false;
-    // }else{
-    //     $("#licenceError").text("");
-    //     $("#license").css("border-color",  "rgba(0, 0, 0, 0.1)");
-    // }
+    if(license == ""){
+        $("#licenceError").text("Please enter vehicle license plate number");
+        $("#license").css("border-color",  "red");
+        return false;
+    }else if (!(licenseRegex.test($("#license").val()))){
+        console.log(license);
+        
+        $("#licenceError").text("Please enter valid license plate number");
+        $("#license").css("border-color",  "red");
+        return false;
+    }else{
+        $("#licenceError").text("");
+        $("#license").css("border-color",  "rgba(0, 0, 0, 0.1)");
+    }
 
     if(vehicle_category == ""){
         $("#vehiCategoryError").text("Please enter vehicle category");
