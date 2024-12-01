@@ -50,8 +50,16 @@ public class VehicleServiceIMPL implements VehicleService {
             vehicleDTO.setVehicle_code(generateNextId());
         }
 
-        StaffEntity staffEntity = staffDAO.findById(vehicleDTO.getId())
-                .orElseThrow(() -> new StaffNotFound("Staff not found with ID: " + vehicleDTO.getId()));
+        StaffEntity staffEntity;
+        if (vehicleDTO.getId() == null || vehicleDTO.getId().isEmpty()) {
+            String defaultStaffId = "S001";
+            staffEntity = staffDAO.findById(defaultStaffId)
+                    .orElseThrow(() -> new StaffNotFound("Default staff not found with ID: " + defaultStaffId));
+        } else {
+            // Fetch staff based on the provided ID
+            staffEntity = staffDAO.findById(vehicleDTO.getId())
+                    .orElseThrow(() -> new StaffNotFound("Staff not found with ID: " + vehicleDTO.getId()));
+        }
 
         VehicleEntity vehicleEntity = mapping.convertToVehicleEntity(vehicleDTO);
 
@@ -74,9 +82,16 @@ public class VehicleServiceIMPL implements VehicleService {
             tmpVehicle.get().setStatus(vehicleDTO.getStatus());
             tmpVehicle.get().setRemark(vehicleDTO.getRemark());
 
-            StaffEntity staff = staffDAO.getReferenceById(vehicleDTO.getId());
+            String defaultStaffId = "S001";
+            StaffEntity staff;
+
+            if (vehicleDTO.getId() == null || vehicleDTO.getId().isEmpty()) {
+                staff = staffDAO.getReferenceById(defaultStaffId);
+            }else {
+                staff = staffDAO.getReferenceById(vehicleDTO.getId());
+            }
             if (staff == null) {
-                throw new StaffNotFound("Staff not found");
+                tmpVehicle.get().setStaff(staffDAO.getReferenceById("S001"));
             } else {
                 tmpVehicle.get().setStaff(staff);
             }

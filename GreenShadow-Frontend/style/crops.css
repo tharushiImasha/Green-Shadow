@@ -135,6 +135,11 @@ input:focus{
     gap: 15px;
 }
 
+.btn-container{
+    display: flex;
+    gap: 20px;
+}
+
 .btn-container button {
     width: 135px;
     height: 35px;

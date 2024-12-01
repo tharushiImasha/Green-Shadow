@@ -3,6 +3,23 @@ $(document).ready(function() {
         dropdownCssClass: 'custom-dropdown', 
         minimumResultsForSearch: Infinity 
     });
+
+    $('#vehicle_ids').select2({
+        dropdownCssClass: 'custom-dropdown', 
+        minimumResultsForSearch: Infinity 
+    });
+
+    $('#vehicle_staff').on('click', function () {
+        $('#assignStaffPopup').css('display', 'flex');
+
+        populateVehicleIdDropdown();
+
+        populatevehicleStaffDropdown();
+    });
+
+    $('#assignCancel').on('click', function () {
+        $('#assignStaffPopup').css('display', 'none');
+    });
 });
 
 const vehicleForm = document.getElementById("vehicle_form");
@@ -100,19 +117,9 @@ function fetchNextVehicleId() {
 }
 
 $(document).ready(function() {
-    $('#vehicle-staff').select2({
-        dropdownCssClass: 'custom-dropdown', 
-        minimumResultsForSearch: Infinity 
-    });
-
-    $('#vehicle-staff').on('change', function() {
-        let selectedValue = $(this).val();
-        console.log('Selected vehicle code:', selectedValue);
-    });
-
     fetchNextVehicleId();
     fetchVehicle(); 
-    populatevehicleStaffDropdown();
+    // populatevehicleStaffDropdown();
 });
 
 vehicleForm.addEventListener('submit', (event) => {
@@ -123,7 +130,6 @@ vehicleForm.addEventListener('submit', (event) => {
         let license = document.getElementById("license").value;
         let vehicle_category = document.getElementById("vehicle_category").value;
         let fuel_type = document.getElementById("fuel_type").value;
-        let vehicleStaff = document.getElementById("vehicle-staff").value;
         let remark = document.getElementById("remark").value;
 
         const vehicleData = {
@@ -133,7 +139,7 @@ vehicleForm.addEventListener('submit', (event) => {
             fuel_type:fuel_type,
             status:"Available",
             remark:remark,
-            id:vehicleStaff
+            id:null
         }
         
         const vehicleJson = JSON.stringify(vehicleData);
@@ -154,7 +160,6 @@ vehicleForm.addEventListener('submit', (event) => {
         });
 
         vehicleForm.reset();
-        $('#vehicle-staff').val('').trigger('change'); 
     }
 });
 
@@ -166,6 +171,8 @@ function buildVehicleTable(allVehicle){
 
     vehicleTableBody.innerHTML = '';
     allVehicle.forEach(function (element) {
+
+        const isAvailable = element.status === "Available";
         
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -179,6 +186,12 @@ function buildVehicleTable(allVehicle){
             <td class = "actionBtn">
                 <button onclick="deleteVehicleData('${element.vehicle_code}')" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 <button onclick='populateVehicleForm(${JSON.stringify(element)})' class="btn btn-warning m-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <button 
+                    onclick='markVehicleAsAvailable("${element.vehicle_code}")' 
+                    class="btn btn-success" 
+                    style="display: ${isAvailable ? 'none' : 'block'};">
+                    Mark as Available
+                </button>
             </td>
         `;
         vehicleTableBody.appendChild(row);
@@ -205,6 +218,9 @@ function deleteVehicleData(id) {
     }
 }
 
+let assignedStaffId = ""
+let availability = ""
+
 function populateVehicleForm(vehicle) {
     document.getElementById("vehicle_id").value = vehicle.vehicle_code;
     document.getElementById("license").value = vehicle.license_plate_number;
@@ -212,7 +228,8 @@ function populateVehicleForm(vehicle) {
     document.getElementById("fuel_type").value = vehicle.fuel_type;
     document.getElementById("remark").value = vehicle.remark; 
 
-    $('#vehicle-staff').val(vehicle.id).trigger('change');
+    assignedStaffId = vehicle.id;
+    availability = vehicle.status;
 
     document.getElementById("vehicle_update").style.display = "block"
     document.getElementById("vehicle_add").style.display = "none"
@@ -223,7 +240,6 @@ document.querySelector('#vehicle_update').onclick = function() {
     let license = document.getElementById("license").value;
     let vehicle_category = document.getElementById("vehicle_category").value;
     let fuel_type = document.getElementById("fuel_type").value;
-    let vehicleStaff = document.getElementById("vehicle-staff").value;
     let remark = document.getElementById("remark").value;
 
     const vehicleData = {
@@ -231,9 +247,9 @@ document.querySelector('#vehicle_update').onclick = function() {
             license_plate_number:license,
             category:vehicle_category,
             fuel_type:fuel_type,
+            status:availability,
             remark:remark,
-            status:"Available",
-            id:vehicleStaff,
+            id:assignedStaffId
         }
         
         const vehicleJson = JSON.stringify(vehicleData);
@@ -247,6 +263,7 @@ document.querySelector('#vehicle_update').onclick = function() {
             if (xhr.status === 204) { // No Content
                 console.log('Update vehicle successfully');
                 fetchVehicle(); 
+                fetchNextVehicleId();
             } else {
                 console.error('Failed to update vehicle:', res);
             }
@@ -262,7 +279,6 @@ document.querySelector('#vehicle_update').onclick = function() {
     document.getElementById("vehicle_update").style.display = "none";
     document.getElementById("vehicle_add").style.display = "block";
     vehicleForm.reset(); 
-    $('#vehicle-staff').val('').trigger('change');
 };
 
 function populatevehicleStaffDropdown() {
@@ -280,11 +296,37 @@ function populatevehicleStaffDropdown() {
                 staffDropdown.append(option);
             });
 
+            console.log('Staff options:', res);
+
+
             staffDropdown.trigger('change');
         },
         error: function(err) {
             console.error('Failed to fetch staff:', err);
         }
+    });
+}
+
+function populateVehicleIdDropdown() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/vehicle",
+        type: "GET",
+        headers: { "Content-Type": "application/json" },
+        success: function (res) {
+            const vehicleDropdown = $("#vehicle_ids");
+            vehicleDropdown.empty();
+            vehicleDropdown.append('<option value="" disabled selected>Select the vehicle ID</option>');
+
+            res.forEach(vehicle => {
+                const option = `<option value="${vehicle.vehicle_code}">${vehicle.vehicle_code}</option>`;
+                vehicleDropdown.append(option);
+            });
+
+            vehicleDropdown.trigger('change');
+        },
+        error: function (err) {
+            console.error('Failed to fetch vehicle IDs:', err);
+        },
     });
 }
 
@@ -321,3 +363,110 @@ $("#vehicle_search").keydown(function (e) {
         }
     }
 });
+
+document.getElementById("assignCancel").addEventListener("click", function () {
+    document.getElementById("assignStaffPopup").style.display = "none";
+});
+
+document.getElementById("assignConfirm").addEventListener("click", function () {
+    const selectedStaff = document.getElementById("vehicle-staff").value;
+    const selectedVehicle = document.getElementById("vehicle_ids").value;
+
+    if (selectedStaff && selectedVehicle) {
+        $.ajax({
+            url: `http://localhost:8080/greenShadow/api/v1/vehicle/${selectedVehicle}`,
+            type: "GET",
+            headers: { "Content-Type": "application/json" },
+            success: function (vehicle) {
+                const vehicleData = {
+                    ...vehicle, 
+                    id: selectedStaff, 
+                    status: "Not Available" 
+                };
+
+                const vehicleJson = JSON.stringify(vehicleData);
+
+                $.ajax({
+                    url: `http://localhost:8080/greenShadow/api/v1/vehicle/${selectedVehicle}`,
+                    type: "PATCH",
+                    data: vehicleJson,
+                    headers: { "Content-Type": "application/json" },
+                    success: function (res, status, xhr) {
+                        if (xhr.status === 204) { // No Content
+                            console.log("Vehicle updated successfully");
+                            fetchVehicle(); // Refresh the table or UI
+                        } else {
+                            console.error("Failed to update vehicle:", res);
+                        }
+                    },
+                    error: function (err) {
+                        console.error("Failed to update vehicle:", err);
+                        if (err.responseText) {
+                            console.log("Error details:", err.responseText);
+                        }
+                    },
+                });
+
+                document.getElementById("assignStaffPopup").style.display = "none"; // Close popup
+            },
+            error: function (err) {
+                console.error("Failed to fetch vehicle data:", err);
+                if (err.responseText) {
+                    console.log("Error details:", err.responseText);
+                }
+            }
+        });
+    } else {
+        alert("Please select both a vehicle and a staff member.");
+    }
+});
+
+
+
+// Function to mark vehicle as available
+function markVehicleAsAvailable(vehicleCode) {
+    if (confirm("Are you sure you want to mark available this vehicle?")) {
+ 
+        $.ajax({
+            url: `http://localhost:8080/greenShadow/api/v1/vehicle/${vehicleCode}`,
+            type: "GET",
+            headers: { "Content-Type": "application/json" },
+            success: function (vehicle) {
+                const vehicleData = {
+                    ...vehicle, 
+                    id: null, 
+                    status: "Available" 
+                };
+
+                const vehicleJson = JSON.stringify(vehicleData);
+
+                $.ajax({
+                    url: `http://localhost:8080/greenShadow/api/v1/vehicle/${vehicleCode}`,
+                    type: "PATCH",
+                    data: JSON.stringify(vehicleData), 
+                    headers: { "Content-Type": "application/json" },
+                    success: function (res, status, xhr) {
+                        if (xhr.status === 204) {
+                            console.log('Vehicle marked as available successfully');
+                            fetchVehicle(); 
+                        } else {
+                            console.error('Failed to update vehicle status:', res);
+                        }
+                    },
+                    error: function (err) {
+                        console.error('Failed to update vehicle status:', err);
+                    }
+                });
+
+            },
+            error: function (err) {
+                console.error("Failed to fetch vehicle data:", err);
+                if (err.responseText) {
+                    console.log("Error details:", err.responseText);
+                }
+            }
+        });    
+    }else {
+        console.log('Mark available action canceled');
+    }
+}
