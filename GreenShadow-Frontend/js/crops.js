@@ -324,8 +324,10 @@ function populateFieldDropdown() {
             fieldDropdown.empty(); 
             fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
 
-            res.forEach(field => {
-                const option = `<option value="${field.field_code}">${field.field_code}</option>`;
+            const filteredFields = res.filter(field => field.field_code !== "F000");
+
+            filteredFields.forEach(field => {
+                const option = `<option value="${field.field_code}">${field.field_code} - ${field.field_name}</option>`;
                 fieldDropdown.append(option);
             });
 

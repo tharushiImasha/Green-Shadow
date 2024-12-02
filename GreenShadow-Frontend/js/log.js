@@ -316,8 +316,10 @@ function populateLogFieldDropdown() {
             fieldDropdown.empty(); 
             fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
 
-            res.forEach(field => {
-                const option = `<option value="${field.field_code}">${field.field_code}</option>`;
+            const filteredFields = res.filter(field => field.field_code !== "F000");
+
+            filteredFields.forEach(field => {
+                const option = `<option value="${field.field_code}">${field.field_code} - ${field.field_name}</option>`;
                 fieldDropdown.append(option);
             });
 
@@ -340,7 +342,7 @@ function populateLogCropDropdown() {
             cropDropdown.append('<option value="" disabled selected>Select a crop</option>');
 
             res.forEach(crop => {
-                const option = `<option value="${crop.crop_code}">${crop.crop_code}</option>`;
+                const option = `<option value="${crop.crop_code}">${crop.crop_code} - ${crop.common_name}</option>`;
                 cropDropdown.append(option);
             });
 
@@ -363,7 +365,7 @@ function populateLogStaffDropdown() {
             staffDropdown.append('<option value="" disabled selected>Select a field</option>');
 
             res.forEach(staff => {
-                const option = `<option value="${staff.id}">${staff.id}</option>`;
+                const option = `<option value="${staff.id}">${staff.id} - ${staff.first_name} ${staff.last_name}</option>`;
                 staffDropdown.append(option);
             });
 

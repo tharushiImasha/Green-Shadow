@@ -554,17 +554,6 @@
         
                     </tbody>
                 </table>
-
-                <!-- <div id="confirmModal"
-                    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; border:1px solid #ccc; padding:20px; z-index:1000;">
-                    <p>Are you sure you want to mark this vehicle as available?</p>
-                    <button id="confirmYes">Confirm</button>
-                    <button id="confirmNo">Cancel</button>
-                </div>
-                
-                <div id="modalOverlay"
-                    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.5); z-index:999;">
-                </div> -->
         
             </div>
         
@@ -601,7 +590,7 @@
     <main class="content" id="equipment">
         <header>
             <div class="search-bar">
-                <input type="text" placeholder="Search equipment here...">
+                <input type="text" placeholder="Search equipment here..." id="equipment_search">
                 <img src="/assets/Search.png" alt="" class="seaech-img">
             </div>
     
@@ -618,53 +607,35 @@
             <h2>Equipments</h2>
         </div>
 
-        <form action="">
+        <form id="equipment_form">
         
             <div class="input-group">
                 <div class="inputs">
                     <label for="id">Equipment ID</label>
-                    <input type="text" placeholder="Enter equipment Id">
+                    <input type="text" placeholder="Enter equipment Id" id="equipment_id">
                 </div>
         
                 <div class="inputs">
                     <label for="name">Name</label>
-                    <input type="text" placeholder="Enter the name">
-                </div>
-            </div>
-        
-            <div class="input-group">
-                <div class="inputs">
-                    <label for="type">Type</label>
-                    <input type="text" placeholder="Enter the type">
-                </div>
-
-                <div class="inputs">
-                    <label for="type">Assigned Field</label>
-                    <div>
-                        <select class="form-select form-select-sm" id="equipment-field">
-                            <option selected>Select assigned field</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
+                    <input type="text" placeholder="Enter the name" id="equipment_name">
+                    <span class="error" id="eqNameError"></span>
                 </div>
             </div>
         
             <div class="input-group" style="width: 47.5%;">
                 <div class="inputs">
-                    <label for="fuelType">Staff Member</label>
-                    <select class="form-select form-select-sm" aria-label="Small select example" id="vehicle-staff">
-                        <option selected>Select the staff member</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <label for="type">Type</label>
+                    <select class="form-select form-select-sm" id="equipment_type">
+                        <option selected>Select the equipment type</option>
                     </select>
+                    <span class="error" id="eqTypeError"></span>
                 </div>
             </div>
         
             <div class="btn-container">
-                <button type="button">Register</button>
+                <button type="button" id="equipment_staff_btn">Assign Staff</button>
+                <button type="submit" id="equipment_add">Register</button>
+                <button type="button" id="equipment_update">Update</button>
             </div>
         
         </form>
@@ -673,14 +644,15 @@
         
             <div class="field-table">
         
-                <table class="table table-hover" id="crop-table">
+                <table class="table table-hover" id="equipment_table">
                     <thead>
                         <tr>
                             <th scope="col">Equipment ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">Type</th>
-                            <th scope="col">Assigned Field</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Staff Member</th>
+                            <th scope="col">Assigned Field</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -692,6 +664,37 @@
             </div>
         
         </section>
+
+        <div id="assignStaffEquipmentPopup" class="popup-container">
+            <div class="popup-content">
+                <h3>Assign Staff Member</h3>
+                <div class="inputs vehiId">
+                    <label for="staff">Equipment ID</label>
+                    <div>
+                        <select class="form-select form-select-sm" id="equipment_ids">
+                            <option selected>Select the equipment ID</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputs vehiId">
+                    <label for="staff">Staff Member</label>
+                    <div>
+                        <select class="form-select form-select-sm" id="equipment_staff">
+                            <option selected>Select the staff member</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputs EquipmentId">
+                    <label for="staff">Field ID</label>
+                    <input type="text" placeholder="Here is field id" id="equipment_field">
+                    <span class="infomation" id="equipmentFieldNote"></span>
+                </div>
+                <div class="popup-buttons">
+                    <button type="button" id="assignStaffConfirm">Confirm</button>
+                    <button type="button" id="assignStaffCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
     
     </main>
 
@@ -852,6 +855,7 @@
     <script src="/js/log.js"></script>
     <script src="/js/vehicle.js"></script>
     <script src="/js/staff.js"></script>
+    <script src="/js/equipment.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

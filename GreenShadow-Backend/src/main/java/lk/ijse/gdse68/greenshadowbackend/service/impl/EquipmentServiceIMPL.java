@@ -36,6 +36,7 @@ public class EquipmentServiceIMPL implements EquipmentService {
     @Autowired
     private FieldDAO fieldDAO;
 
+    @Override
     public String generateNextId() {
         String lastId = equipmentDAO.findLastId();
 

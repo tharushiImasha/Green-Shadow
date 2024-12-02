@@ -37,9 +37,7 @@ function validateVehicleForm(){
         $("#licenceError").text("Please enter vehicle license plate number");
         $("#license").css("border-color",  "red");
         return false;
-    }else if (!(licenseRegex.test($("#license").val()))){
-        console.log(license);
-        
+    }else if (!(licenseRegex.test($("#license").val()))){        
         $("#licenceError").text("Please enter valid license plate number");
         $("#license").css("border-color",  "red");
         return false;
@@ -119,7 +117,6 @@ function fetchNextVehicleId() {
 $(document).ready(function() {
     fetchNextVehicleId();
     fetchVehicle(); 
-    // populatevehicleStaffDropdown();
 });
 
 vehicleForm.addEventListener('submit', (event) => {
@@ -189,7 +186,7 @@ function buildVehicleTable(allVehicle){
                 <button 
                     onclick='markVehicleAsAvailable("${element.vehicle_code}")' 
                     class="btn btn-success" 
-                    style="display: ${isAvailable ? 'none' : 'block'};">
+                    style="display: ${isAvailable ? 'none' : 'block'}; font-size: 12px;">
                     Mark as Available
                 </button>
             </td>
@@ -260,7 +257,7 @@ document.querySelector('#vehicle_update').onclick = function() {
         data: vehicleJson,
         headers: {"Content-Type": "application/json"},
         success: function(res, status, xhr) {
-            if (xhr.status === 204) { // No Content
+            if (xhr.status === 204) { 
                 console.log('Update vehicle successfully');
                 fetchVehicle(); 
                 fetchNextVehicleId();
@@ -292,7 +289,7 @@ function populatevehicleStaffDropdown() {
             staffDropdown.append('<option value="" disabled selected>Select a field</option>');
 
             res.forEach(staff => {
-                const option = `<option value="${staff.id}">${staff.id}</option>`;
+                const option = `<option value="${staff.id}">${staff.id} - ${staff.first_name} ${staff.last_name}</option>`;
                 staffDropdown.append(option);
             });
 
@@ -317,7 +314,9 @@ function populateVehicleIdDropdown() {
             vehicleDropdown.empty();
             vehicleDropdown.append('<option value="" disabled selected>Select the vehicle ID</option>');
 
-            res.forEach(vehicle => {
+            const availableVehicles = res.filter(vehicle => vehicle.status === "Available");
+
+            availableVehicles.forEach(vehicle => {
                 const option = `<option value="${vehicle.vehicle_code}">${vehicle.vehicle_code}</option>`;
                 vehicleDropdown.append(option);
             });
@@ -422,8 +421,6 @@ document.getElementById("assignConfirm").addEventListener("click", function () {
 });
 
 
-
-// Function to mark vehicle as available
 function markVehicleAsAvailable(vehicleCode) {
     if (confirm("Are you sure you want to mark available this vehicle?")) {
  

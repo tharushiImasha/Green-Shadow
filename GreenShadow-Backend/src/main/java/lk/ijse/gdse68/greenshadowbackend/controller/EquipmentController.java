@@ -17,10 +17,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/equipment")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EquipmentController {
 
     @Autowired
     private final EquipmentService equipmentService;
+
+    @GetMapping("/next-id")
+    public ResponseEntity<String> getNextId() {
+        String nextId = equipmentService.generateNextId();
+        return ResponseEntity.ok(nextId);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){

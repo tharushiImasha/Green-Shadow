@@ -175,8 +175,10 @@ function buildFieldTable(allFields){
         return;
     }
 
+    const filteredFields = allFields.filter(element => element.field_code !== "F000");
+
     fieldTableBody.innerHTML = '';
-    allFields.forEach(function (element) {
+    filteredFields.forEach(function (element) {
         const location = element.location 
             ? `x : ${element.location.x},  y : ${element.location.y}` 
             : 'N/A';

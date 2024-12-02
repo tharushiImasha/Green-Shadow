@@ -1,5 +1,6 @@
 #vehicle-staff,
-#equipment-field{
+#equipment-field,
+#equipment_type{
     background-color: transparent;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -56,7 +57,8 @@
     max-height: 150px !important;
 }
 
-#vehicle_staff{
+#vehicle_staff,
+#equipment_staff_btn{
     background-color: #026664af;
 }
 
@@ -113,18 +115,4 @@
 
 .vehiId{
     margin-bottom: 20px;
-}
-
-#confirmModal button{
-    width: 135px;
-    height: 35px;
-    font-size: 14px;
-    font-weight: 500;
-    left: 0;
-    background-color: #162635;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
