@@ -14,8 +14,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class StaffFieldDetailPK implements Serializable {
-    @Column(name = "staff_id")
-    private String id;
-
+    private String staff_id;
     private String field_code;
 }

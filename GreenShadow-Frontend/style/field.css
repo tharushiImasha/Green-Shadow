@@ -60,3 +60,21 @@
     font-size: 11px;
     color: rgba(255, 0, 0, 0.692);
 }
+
+#field_staff option {
+    font-size: 12px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+    font-size: 12px;
+}
+
+#field_staff {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#field_staff_view{
+    width: 200px;
+    background-color: #7e7e7ebe;
+}

@@ -277,10 +277,12 @@
             </div>
         
             <div class="btn-container">
+                <button type="button" id="field_staff_view">View Assigned Staff</button>
+                <button type="button" id="field_staff_btn">Assign Staff</button>
                 <button type="submit" id="field_add">Register</button>
                 <button type="button" id="field_update">Update</button>
             </div>
-        
+
         </form>
         
         <section class="filed-table-sec">
@@ -303,6 +305,65 @@
                     </tbody>
                 </table>
         
+            </div>
+
+            <div id="assignStaffFieldPopup" class="popup-container">
+                <div class="popup-content">
+                    <h3>Assign Staff Member</h3>
+                    <div class="inputs" style="margin-top: 20px;">
+                        <input type="date" class="vehiId" id="field_staff_date">
+                    </div>
+                   
+                    <div class="inputs vehiId">
+                        <label for="staff">Field ID</label>
+                        <div>
+                            <select class="form-select form-select-sm" id="field_ids">
+                                <option selected>Select the field ID</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inputs vehiId">
+                        <label for="staff">Staff Member</label>
+                        <div>
+                            <select class="form-select form-select-sm" id="field_staff" multiple>
+                                <option selected>Select the staff member</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup-buttons">
+                        <button type="button" id="assignFieldSConfirm">Confirm</button>
+                        <button type="button" id="assignFieldSCancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="viewStaffFieldPopup" class="popup-container">
+                <div class="popup-content">
+                    <h3>Assigned Staff Member</h3>
+                    <div class="inputs" style="margin-top: 20px;">
+                        <input type="date" class="vehiId" id="field_view_date" readonly>
+                    </div>
+            
+                    <div class="field-table-div">
+                    
+                        <table class="table table-hover" id="field_view_table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Field ID</th>
+                                    <th scope="col">Staff ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-table">
+                    
+                            </tbody>
+                        </table>
+                    
+                    </div>
+
+                    <div class="popup-buttons">
+                        <button type="button" id="viewieldSCancel">Cancel</button>
+                    </div>
+                </div>
             </div>
         
         </section>

@@ -26,8 +26,61 @@ function previewImage2(event) {
     }
 }
 
+function getFieldDate() {
+    const logDateInput = document.getElementById("field_staff_date");
+    const today = new Date();
+    const formattedDate = today.toISOString().split("T")[0];
+    logDateInput.value = formattedDate;
+};
+
+function getFieldViewDate() {
+    const logDateInput = document.getElementById("field_view_date");
+    const today = new Date();
+    const formattedDate = today.toISOString().split("T")[0];
+    logDateInput.value = formattedDate;
+};
+
+$(document).ready(function() {
+    $('#field_ids').select2({
+        dropdownCssClass: 'custom-dropdown', 
+        minimumResultsForSearch: Infinity 
+    });
+
+    $('#field_staff').select2({
+        dropdownCssClass: 'custom-dropdown', 
+        minimumResultsForSearch: Infinity 
+    });
+
+    $('#field_staff_btn').on('click', function () {
+        $('#assignStaffFieldPopup').css('display', 'flex');
+
+        populateFieldIdDropdown();
+
+        populateFieldStaffDropdown();
+
+        getFieldDate();
+    });
+
+    $('#assignFieldSCancel').on('click', function () {
+        $('#assignStaffFieldPopup').css('display', 'none');
+    });
+
+    $('#field_staff_view').on('click', function () {
+        $('#viewStaffFieldPopup').css('display', 'flex');
+
+        fetchStaffField();
+
+        getFieldViewDate();
+    });
+
+    $('#viewieldSCancel').on('click', function () {
+        $('#viewStaffFieldPopup').css('display', 'none');
+    });
+});
+
 const fieldForm = document.getElementById("field_form");
 const fieldTableBody = document.getElementById("field_table").querySelector('tbody');
+const viewTableBody = document.getElementById("field_view_table").querySelector('tbody');
 
 document.getElementById("field_update").style.display = "none"
 
@@ -210,6 +263,7 @@ function buildFieldTable(allFields){
     });
 
 }
+
 
 function deleteFieldData(id) {
     if (confirm("Are you sure you want to delete this field?")) {
@@ -418,3 +472,169 @@ function clearFieldForm() {
     document.getElementById('imagePreviewF1').style.display = "none"
     document.getElementById('imagePreviewF2').style.display = "none"
 }
+
+function populateFieldStaffDropdown() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/staff", 
+        type: "GET",
+        headers: { "Content-Type": "application/json" },
+        success: function(res) {
+            const staffDropdown = $("#field_staff");
+            staffDropdown.empty(); // Clear existing options
+
+            res.forEach(staff => {
+                const option = `<option value="${staff.id}">${staff.id} - ${staff.first_name} ${staff.last_name}</option>`;
+                staffDropdown.append(option);
+            });
+
+            console.log('Staff options:', res);
+        },
+        error: function(err) {
+            console.error('Failed to fetch staff:', err);
+        }
+    });
+}
+
+function populateFieldIdDropdown() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/field", 
+        type: "GET",
+        headers: { "Content-Type": "application/json" },
+        success: function(res) {
+            const fieldDropdown = $("#field_ids");
+            fieldDropdown.empty(); 
+            fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
+
+            const filteredFields = res.filter(field => field.field_code !== "F000");
+
+            filteredFields.forEach(field => {
+                const option = `<option value="${field.field_code}">${field.field_code} - ${field.field_name}</option>`;
+                fieldDropdown.append(option);
+            });
+
+            fieldDropdown.trigger('change');
+        },
+        error: function(err) {
+            console.error('Failed to fetch fields:', err);
+        }
+    });
+}
+
+document.getElementById("assignFieldSCancel").addEventListener("click", function () {
+    document.getElementById("assignStaffFieldPopup").style.display = "none";
+});
+
+document.getElementById("assignFieldSConfirm").addEventListener("click", function () {
+    // Get selected staff IDs (multiple selection)
+    const selectedStaffOptions = Array.from(document.getElementById("field_staff").selectedOptions);
+    const selectedStaffs = selectedStaffOptions.map(option => option.value);
+
+    // Get selected field ID
+    const selectedField = document.getElementById("field_ids").value;
+
+    // Get the assigned date
+    const assignedDate = document.getElementById("field_staff_date").value;
+
+    // Validate inputs
+    if (selectedStaffs.length > 0 && selectedField && assignedDate) {
+        // Prepare the payload
+        const payload = {
+            fieldCode: selectedField,
+            staffId: selectedStaffs,
+            assignedDate: assignedDate
+        };
+
+        // Make an AJAX POST request to save the data
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/staff_field", // Adjust your API endpoint as needed
+            type: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify(payload),
+            success: function (res) {
+                alert("Staff members successfully assigned to the field!");
+                console.log("Response:", res);
+
+                // Close the popup and reset the form
+                document.getElementById("assignStaffFieldPopup").style.display = "none";
+                document.getElementById("field_staff").value = ""; // Reset staff dropdown
+                document.getElementById("field_ids").value = "";   // Reset field dropdown
+                document.getElementById("field_staff_date").value = ""; // Reset date field
+            },
+            error: function (err) {
+                console.error("Failed to assign staff members:", err);
+                alert("Failed to assign staff members. Please try again.");
+            }
+        });
+    } else {
+        alert("Please select a field, at least one staff member, and provide an assigned date.");
+    }
+});
+
+
+
+async function getStaffIdsByFieldCode(fieldCode) {
+    try {
+        const response = await fetch(`http://localhost:8080/greenShadow/api/v1/staff_field/staff-field/${fieldCode}`); // Ensure this endpoint is correct
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const staffIds = await response.json(); // Assuming this directly returns an array of staff IDs
+        return staffIds;
+    } catch (error) {
+        console.error('Error fetching staff IDs:', error);
+        return []; // Return an empty array in case of error
+    }
+}
+
+function fetchStaffField() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/staff_field",
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: function(res) {
+            console.log('Response:', res);
+            buildViewTable(res);
+        },
+        error: function(err) {
+            console.error('Failed to fetch field data:', err);
+        }
+    });
+}
+
+
+function buildViewTable(detail) {
+    if (!Array.isArray(detail)) {
+        console.error('Expected an array but got:', detail);
+        return;
+    }
+
+    const today = new Date().toISOString().split('T')[0]; 
+
+    const todayDetails = detail.filter(element => {
+        const assignedDate = element.assignedDate;
+        return assignedDate && assignedDate.split('T')[0] === today;
+    });
+
+    const groupedDetails = todayDetails.reduce((acc, element) => {
+        const fieldCode = element.fieldCode;
+        if (!acc[fieldCode]) {
+            acc[fieldCode] = [];
+        }
+        acc[fieldCode].push(element.staffId); 
+        return acc;
+    }, {});
+
+    viewTableBody.innerHTML = '';
+    Object.entries(groupedDetails).forEach(([fieldCode, staffIds]) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${fieldCode}</td>
+            <td>${staffIds.join(' , ')}</td> <!-- Join staff IDs with a comma separator -->
+        `;
+        viewTableBody.appendChild(row);
+    });
+}
+
+

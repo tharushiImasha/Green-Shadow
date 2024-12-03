@@ -58,7 +58,8 @@
 }
 
 #vehicle_staff,
-#equipment_staff_btn{
+#equipment_staff_btn,
+#field_staff_btn{
     background-color: #026664af;
 }
 
@@ -103,12 +104,16 @@
     cursor: pointer;
 }
 
-.popup-buttons #assignConfirm {
+.popup-buttons #assignConfirm,
+#assignFieldSConfirm,
+ #assignStaffConfirm{
     background-color: #4CAF50;
     color: white;
 }
 
-.popup-buttons #assignCancel {
+.popup-buttons #assignCancel,
+#assignFieldSCancel,
+#assignStaffCancel {
     background-color: #f44336;
     color: white;
 }

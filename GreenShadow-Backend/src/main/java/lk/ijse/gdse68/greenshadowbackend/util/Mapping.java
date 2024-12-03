@@ -97,4 +97,8 @@ public class Mapping {
     public List<UserDTO> convertToUserDTOList(List<UserEntity> allUser) {
         return modelMapper.map(allUser, new TypeToken<List<UserDTO>>() {}.getType());
     }
+
+    public StaffFieldDetails convertToStaffFieldEntity(StaffFieldDetailsDTO staffFieldDetailsDTO) {
+        return modelMapper.map(staffFieldDetailsDTO, StaffFieldDetails.class);
+    }
 }
