@@ -88,7 +88,10 @@ function fetchVehicle() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/vehicle",
         type: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             console.log('Response:', res);
             buildVehicleTable(res);
@@ -103,6 +106,9 @@ function fetchNextVehicleId() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/vehicle/next-id",
         type: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
         success: function(res) {
             console.log('Next vehicle ID:', res);
             document.getElementById("vehicle_id").value = res; 
@@ -117,6 +123,24 @@ function fetchNextVehicleId() {
 $(document).ready(function() {
     fetchNextVehicleId();
     fetchVehicle(); 
+
+    const datetimeInput = document.getElementById('datetimeInputVe');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 });
 
 vehicleForm.addEventListener('submit', (event) => {
@@ -145,7 +169,10 @@ vehicleForm.addEventListener('submit', (event) => {
             url: "http://localhost:8080/greenShadow/api/v1/vehicle",
             type: "POST",
             data: vehicleJson,
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success:(res) => {
                 console.log(JSON.stringify(res));
                 fetchVehicle();
@@ -201,6 +228,9 @@ function deleteVehicleData(id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/vehicle/${id}`,
             type: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchVehicle();
@@ -255,7 +285,10 @@ document.querySelector('#vehicle_update').onclick = function() {
         url: `http://localhost:8080/greenShadow/api/v1/vehicle/${vehicleData.vehicle_code}`, 
         type: "PATCH",
         data: vehicleJson,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res, status, xhr) {
             if (xhr.status === 204) { 
                 console.log('Update vehicle successfully');
@@ -282,7 +315,10 @@ function populatevehicleStaffDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const staffDropdown = $("#vehicle-staff");
             staffDropdown.empty(); 
@@ -308,7 +344,10 @@ function populateVehicleIdDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/vehicle",
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function (res) {
             const vehicleDropdown = $("#vehicle_ids");
             vehicleDropdown.empty();
@@ -337,7 +376,10 @@ $("#vehicle_search").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/vehicle/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 success: function(vehicle) {
                     if (vehicle && vehicle.vehicle_code) { 
                         populateVehicleForm(vehicle);
@@ -375,7 +417,10 @@ document.getElementById("assignConfirm").addEventListener("click", function () {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/vehicle/${selectedVehicle}`,
             type: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success: function (vehicle) {
                 const vehicleData = {
                     ...vehicle, 
@@ -389,7 +434,10 @@ document.getElementById("assignConfirm").addEventListener("click", function () {
                     url: `http://localhost:8080/greenShadow/api/v1/vehicle/${selectedVehicle}`,
                     type: "PATCH",
                     data: vehicleJson,
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
                     success: function (res, status, xhr) {
                         if (xhr.status === 204) { // No Content
                             console.log("Vehicle updated successfully");
@@ -427,7 +475,10 @@ function markVehicleAsAvailable(vehicleCode) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/vehicle/${vehicleCode}`,
             type: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success: function (vehicle) {
                 const vehicleData = {
                     ...vehicle, 
@@ -441,7 +492,10 @@ function markVehicleAsAvailable(vehicleCode) {
                     url: `http://localhost:8080/greenShadow/api/v1/vehicle/${vehicleCode}`,
                     type: "PATCH",
                     data: JSON.stringify(vehicleData), 
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
                     success: function (res, status, xhr) {
                         if (xhr.status === 204) {
                             console.log('Vehicle marked as available successfully');

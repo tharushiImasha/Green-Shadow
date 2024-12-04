@@ -34,6 +34,24 @@ $(document).ready(function() {
         dropdownCssClass: 'custom-dropdown', 
         minimumResultsForSearch: Infinity 
     });
+
+    const datetimeInput = document.getElementById('datetimeInputLo');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 });
 
 const logForm = document.getElementById("log_form");
@@ -90,7 +108,10 @@ function fetchLogs() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/log",
         type: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             console.log('Response:', res);
             buildLogTable(res);
@@ -105,6 +126,9 @@ function fetchNextLogId() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/log/next-id",
         type: "GET",
+        headers: {
+            "Authorization": "Bearer "+ token,
+        }, 
         success: function(res) {
             console.log('Next Log ID:', res);
             document.getElementById("log_code").value = res; 
@@ -150,6 +174,9 @@ logForm.addEventListener('submit', (event) => {
             data: formData,
             processData: false, 
             contentType: false, 
+            headers: {
+                "Authorization": "Bearer "+ token,
+            },
             success: (res) => {
                 console.log(JSON.stringify(res));
                 document.getElementById("log_code").value = res.crop_code;
@@ -204,6 +231,9 @@ function deleteLogData(id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/log/${id}`,
             type: "DELETE",
+            headers: {
+                "Authorization": "Bearer "+ token,
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchLogs();
@@ -282,6 +312,9 @@ document.querySelector('#log_update').onclick = function() {
         data: formData,
         processData: false, 
         contentType: false, 
+        headers: {
+            "Authorization": "Bearer "+ token,
+        },
         success: function(res, status, xhr) {
             if (xhr.status === 204) {  
                 console.log('Log updated successfully');
@@ -310,7 +343,10 @@ function populateLogFieldDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/field", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const fieldDropdown = $("#log_field");
             fieldDropdown.empty(); 
@@ -335,7 +371,10 @@ function populateLogCropDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/crop", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const cropDropdown = $("#log_crop");
             cropDropdown.empty(); 
@@ -358,7 +397,10 @@ function populateLogStaffDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const staffDropdown = $("#log_staff");
             staffDropdown.empty(); 
@@ -385,7 +427,10 @@ $("#log_search").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/log/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 success: function(log) {
                     if (log && log.log_code) { 
                         populateLogForm(log);

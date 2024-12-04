@@ -1,13 +1,12 @@
 package lk.ijse.gdse68.greenshadowbackend.entity.impl;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lk.ijse.gdse68.greenshadowbackend.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -17,8 +16,11 @@ import lombok.NoArgsConstructor;
 
 public class UserEntity implements SuperEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uid;
     @Column(unique = true, nullable = false)
     private String email;
+    private String name;
     private String password;
     private String role;
 }

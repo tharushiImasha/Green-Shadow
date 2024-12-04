@@ -9,6 +9,11 @@ $(document).ready(function() {
         minimumResultsForSearch: Infinity 
     });
 
+    $('#field_eq_staff').select2({
+        dropdownCssClass: 'custom-dropdown', 
+        minimumResultsForSearch: Infinity 
+    });
+
     $('#equipment_type').select2({
         dropdownCssClass: 'custom-dropdown', 
         minimumResultsForSearch: Infinity 
@@ -62,39 +67,66 @@ function validateEquipmentForm(){
 }
 
 function fetchEquipment() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/equipment",
-        type: "GET",
-        headers: {"Content-Type": "application/json"},
-        success: function(res) {
-            console.log('Response:', res);
-            buildEquipmentTable(res);
-        },
-        error: function(err) {
-            console.error('Failed to fetch equipment data:', err);
-        }
-    });
+    if(token){
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/equipment",
+            type: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+            },
+            success: function(res) {
+                console.log('Response:', res);
+                buildEquipmentTable(res);
+            },
+            error: function(err) {
+                console.error('Failed to fetch equipment data:', err);
+            }
+        });
+    }
 }
 
 function fetchNextEquipmentId() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/equipment/next-id",
-        type: "GET",
-        success: function(res) {
-            console.log('Next equipment ID:', res);
-            document.getElementById("equipment_id").value = res; 
-            document.getElementById("equipment_id").readOnly = true; 
-        },
-        error: function(err) {
-            console.error('Failed to fetch next equipment ID:', err);
-        }
-    });
+    if(token){
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/equipment/next-id",
+            type: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            success: function(res) {
+                console.log('Next equipment ID:', res);
+                document.getElementById("equipment_id").value = res; 
+                document.getElementById("equipment_id").readOnly = true; 
+            },
+            error: function(err) {
+                console.error('Failed to fetch next equipment ID:', err);
+            }
+        });
+    }
 }
 
 $(document).ready(function() {
     fetchNextEquipmentId();
     fetchEquipment(); 
     populateEquipmentType();
+
+    const datetimeInput = document.getElementById('datetimeInputEq');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 });
 
 equipmentForm.addEventListener('submit', (event) => {
@@ -120,7 +152,10 @@ equipmentForm.addEventListener('submit', (event) => {
             url: "http://localhost:8080/greenShadow/api/v1/equipment",
             type: "POST",
             data: equipmentJson,
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success:(res) => {
                 console.log(JSON.stringify(res));
                 fetchEquipment();
@@ -176,6 +211,9 @@ function deleteEquipmentData(id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/equipment/${id}`,
             type: "DELETE",
+            headers: {
+                "Authorization": "Bearer "+ token,
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchEquipment();
@@ -228,7 +266,10 @@ document.querySelector('#equipment_update').onclick = function() {
         url: `http://localhost:8080/greenShadow/api/v1/equipment/${equipmentData.equipment_id}`, 
         type: "PATCH",
         data: equipmentJson,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res, status, xhr) {
             if (xhr.status === 204) { 
                 console.log('Update equipment successfully');
@@ -251,50 +292,32 @@ document.querySelector('#equipment_update').onclick = function() {
     equipmentForm.reset(); 
 };
 
-// function populateEquipmentStaffDropdown() {
-//     $.ajax({
-//         url: "http://localhost:8080/greenShadow/api/v1/staff", 
-//         type: "GET",
-//         headers: { "Content-Type": "application/json" },
-//         success: function(res) {
-//             const staffDropdown = $("#equipment_staff");
-//             staffDropdown.empty(); 
-//             staffDropdown.append('<option value="" disabled selected>Select a field</option>');
-
-//             res.forEach(staff => {
-//                 const option = `<option value="${staff.id}">${staff.id}</option>`;
-//                 staffDropdown.append(option);
-//             });
-
-//             console.log('Staff options:', res);
-
-
-//             staffDropdown.trigger('change');
-//         },
-//         error: function(err) {
-//             console.error('Failed to fetch staff:', err);
-//         }
-//     });
-// }
-
 function populateEquipmentStaffDropdown() {
     $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/staff", 
+        url: "http://localhost:8080/greenShadow/api/v1/staff",
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const staffDropdown = $("#equipment_staff");
-            staffDropdown.empty(); 
-            staffDropdown.append('<option value="" disabled selected>Select a staff member</option>');
+            staffDropdown.empty();
+            staffDropdown.append('<option value="" disabled selected>Select a staff</option>');
 
             res.forEach(staff => {
-                const option = `<option value="${staff.id}" data-field-id="${staff.staff_field?.[0]?.field?.field_code || ''}">
-                                    ${staff.id} - ${staff.first_name} ${staff.last_name}
-                                </option>`;
+                const option = `<option value="${staff.id}">${staff.id} - ${staff.first_name} ${staff.last_name}</option>`;
                 staffDropdown.append(option);
             });
 
             console.log('Staff options:', res);
+
+            staffDropdown.on('change', function() {
+                const selectedStaffId = $(this).val();
+                if (selectedStaffId) {
+                    fetchFieldsByStaffId(selectedStaffId);
+                }
+            });
 
             staffDropdown.trigger('change');
         },
@@ -304,17 +327,44 @@ function populateEquipmentStaffDropdown() {
     });
 }
 
+function fetchFieldsByStaffId(staffId) {
+    $.ajax({
+        url: `http://localhost:8080/greenShadow/api/v1/staff_field/getField/${staffId}`,
+        type: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        success: function(res) {
+            const fieldDropdown = $("#field_eq_staff");
+            fieldDropdown.empty();
+            fieldDropdown.append('<option value="" disabled selected>Select a field</option>');
+
+            res.forEach(field => {
+                const option = `<option value="${field.fieldCode}">${field.fieldCode}</option>`;
+                fieldDropdown.append(option);
+            });
+
+            console.log(`Fields for staff ID ${staffId}:`, res);
+        },
+        error: function(err) {
+            console.error(`Failed to fetch fields for staff ID ${staffId}:`, err);
+        }
+    });
+}
+
+
 $(document).ready(function () {
     $("#equipment_staff").on("change", function () {
         const selectedOption = $(this).find(":selected");
-        const fieldId = selectedOption.data("field-id"); // Get the field ID from the selected option
+        const fieldId = selectedOption.data("field-id"); 
         const fieldInput = $("#equipment_field");
 
         if (fieldId) {
             fieldInput.val(fieldId);
-            $("#equipmentFieldNote").text(""); // Clear any previous notes
+            $("#equipmentFieldNote").text(""); 
         } else {
-            fieldInput.val(""); // Clear the field input if no field ID is found
+            fieldInput.val(""); 
             $("#equipmentFieldNote").text("No field assigned to this staff member.");
         }
     });
@@ -346,7 +396,10 @@ function populateEquipmentIdDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/equipment",
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function (res) {
             const equipmentDropdown = $("#equipment_ids");
             equipmentDropdown.empty();
@@ -375,7 +428,10 @@ $("#equipment_search").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/equipment/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 success: function(equipment) {
                     if (equipment && equipment.equipment_id) { 
                         populateEquipmentForm(equipment);
@@ -409,16 +465,23 @@ document.getElementById("assignStaffCancel").addEventListener("click", function 
 document.getElementById("assignStaffConfirm").addEventListener("click", function () {
     const selectedStaff = document.getElementById("equipment_staff").value;
     const selectedEquipment = document.getElementById("equipment_ids").value;
+    const selectedField = document.getElementById("field_eq_staff").value;
+
+    console.log("awaa", selectedEquipment)
 
     if (selectedStaff && selectedEquipment) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/equipment/${selectedEquipment}`,
             type: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success: function (equipment) {
                 const equipmentData = {
                     ...equipment, 
-                    id: selectedStaff, 
+                    staff_id: selectedStaff,
+                    field_code: selectedField,
                     status: "NOT_AVAILABLE" 
                 };
 
@@ -428,7 +491,10 @@ document.getElementById("assignStaffConfirm").addEventListener("click", function
                     url: `http://localhost:8080/greenShadow/api/v1/equipment/${selectedEquipment}`,
                     type: "PATCH",
                     data: equipmentJson,
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
                     success: function (res, status, xhr) {
                         if (xhr.status === 204) {
                             console.log("Equipment updated successfully");
@@ -466,11 +532,15 @@ function markEquipmentAsAvailable(equipment_id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/equipment/${equipment_id}`,
             type: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success: function (equipment) {
                 const equipmentData = {
                     ...equipment, 
-                    id: null, 
+                    staff_id: "S001",
+                    field_code: "F000", 
                     status: "AVAILABLE" 
                 };
 
@@ -480,7 +550,10 @@ function markEquipmentAsAvailable(equipment_id) {
                     url: `http://localhost:8080/greenShadow/api/v1/equipment/${equipment_id}`,
                     type: "PATCH",
                     data: JSON.stringify(equipmentData), 
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
                     success: function (res, status, xhr) {
                         if (xhr.status === 204) {
                             console.log('Equipment marked as available successfully');

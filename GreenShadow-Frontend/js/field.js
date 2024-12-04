@@ -76,6 +76,24 @@ $(document).ready(function() {
     $('#viewieldSCancel').on('click', function () {
         $('#viewStaffFieldPopup').css('display', 'none');
     });
+
+    const datetimeInput = document.getElementById('datetimeInputFi');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 });
 
 const fieldForm = document.getElementById("field_form");
@@ -146,33 +164,43 @@ function validateForm(){
 }
 
 function fetchFields() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/field",
-        type: "GET",
-        headers: {"Content-Type": "application/json"},
-        success: function(res) {
-            console.log('Response:', res);
-            buildFieldTable(res);
-        },
-        error: function(err) {
-            console.error('Failed to fetch field data:', err);
-        }
-    });
+    if(token){
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/field",
+            type: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+            },
+            success: function(res) {
+                console.log('Response:', res);
+                buildFieldTable(res);
+            },
+            error: function(err) {
+                console.error('Failed to fetch field data:', err);
+            }
+        });
+    }
 }
 
 function fetchNextFieldId() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/field/next-id",
-        type: "GET",
-        success: function(res) {
-            console.log('Next field ID:', res);
-            document.getElementById("field_id").value = res; 
-            document.getElementById("field_id").readOnly = true; 
-        },
-        error: function(err) {
-            console.error('Failed to fetch next field ID:', err);
-        }
-    });
+    if(token){
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/field/next-id",
+            type: "GET",
+            headers: {
+                    "Authorization": "Bearer "+ token,
+                }, 
+            success: function(res) {
+                console.log('Next field ID:', res);
+                document.getElementById("field_id").value = res; 
+                document.getElementById("field_id").readOnly = true; 
+            },
+            error: function(err) {
+                console.error('Failed to fetch next field ID:', err);
+            }
+        });
+    }
 }
 
 $(document).ready(function () {
@@ -205,7 +233,10 @@ fieldForm.addEventListener('submit', (event) => {
             type: "POST",
             data: formData,
             processData: false, 
-            contentType: false, 
+            contentType: false,
+            headers: {
+                "Authorization": "Bearer "+ token,
+            }, 
             success: (res) => {
                 console.log(JSON.stringify(res));
                 document.getElementById("field_id").value = res.field_code;
@@ -244,7 +275,6 @@ function buildFieldTable(allFields){
             ? `<img src="data:image/jpeg;base64,${element.image_2}" alt="Field Image 2" style="width: 100px; height: 100px;">` 
             : 'No Image 2';
 
-        // Combine the images for display
         const images = `<div style="display: flex; gap: 8px;">${image1}${image2}</div>`;
 
         const row = document.createElement('tr');
@@ -270,6 +300,9 @@ function deleteFieldData(id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/field/${id}`,
             type: "DELETE",
+            headers: {
+                "Authorization": "Bearer "+ token,
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchNextFieldId();
@@ -303,20 +336,18 @@ function populateFieldForm(field) {
 
     if (field.image_1) {
         const imagePreviewF1 = document.getElementById('imagePreviewF1');
-        const mimeType1 = getMimeType(field.image_1); // Function to determine MIME type
+        const mimeType1 = getMimeType(field.image_1); 
 
-        // Set image preview
         imagePreviewF1.src = `data:${mimeType1};base64,${field.image_1}`;
         imagePreviewF1.style.display = 'block';
 
-        // Convert base64 to a File object and set it to the file input
         const file = base64ToFile(field.image_1, mimeType1, 'image.' + mimeType1.split('/')[1]);
         setFileToInput(file);
     }
 
     if (field.image_2) {
         const imagePreviewF2 = document.getElementById('imagePreviewF2');
-        const mimeType2 = getMimeType(field.image_2); // Function to determine MIME type
+        const mimeType2 = getMimeType(field.image_2); 
         imagePreviewF2.src = `data:${mimeType2};base64,${field.image_2}`;
         imagePreviewF2.style.display = 'block';
 
@@ -338,8 +369,8 @@ function base64ToFile(base64Data, mimeType, fileName) {
         byteArray[i] = binaryData.charCodeAt(i);
     }
 
-    const blob = new Blob([byteArray], { type: mimeType }); // Create a Blob from byteArray
-    const file = new File([blob], fileName, { type: mimeType }); // Create a File object from Blob
+    const blob = new Blob([byteArray], { type: mimeType }); 
+    const file = new File([blob], fileName, { type: mimeType }); 
     return file;
 }
 
@@ -411,6 +442,9 @@ document.querySelector('#field_update').onclick = function() {
         data: formData,
         processData: false, 
         contentType: false, 
+        headers: {
+            "Authorization": "Bearer "+ token,
+        },
         success: function(res, status, xhr) {
             if (xhr.status === 204) {  
                 console.log('Field updated successfully');
@@ -442,7 +476,10 @@ $("#search_field").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/field/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 success: function(field) {
                     if (field && field.field_code) { 
                         populateFieldForm(field);
@@ -477,7 +514,10 @@ function populateFieldStaffDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const staffDropdown = $("#field_staff");
             staffDropdown.empty(); // Clear existing options
@@ -499,7 +539,10 @@ function populateFieldIdDropdown() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/field", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const fieldDropdown = $("#field_ids");
             fieldDropdown.empty(); 
@@ -525,42 +568,36 @@ document.getElementById("assignFieldSCancel").addEventListener("click", function
 });
 
 document.getElementById("assignFieldSConfirm").addEventListener("click", function () {
-    // Get selected staff IDs (multiple selection)
     const selectedStaffOptions = Array.from(document.getElementById("field_staff").selectedOptions);
     const selectedStaffs = selectedStaffOptions.map(option => option.value);
 
-    // Get selected field ID
     const selectedField = document.getElementById("field_ids").value;
 
-    // Get the assigned date
     const assignedDate = document.getElementById("field_staff_date").value;
 
-    // Validate inputs
     if (selectedStaffs.length > 0 && selectedField && assignedDate) {
-        // Prepare the payload
         const payload = {
             fieldCode: selectedField,
             staffId: selectedStaffs,
             assignedDate: assignedDate
         };
 
-        // Make an AJAX POST request to save the data
         $.ajax({
-            url: "http://localhost:8080/greenShadow/api/v1/staff_field", // Adjust your API endpoint as needed
+            url: "http://localhost:8080/greenShadow/api/v1/staff_field", 
             type: "POST",
             headers: {
-                "Content-Type": "application/json"
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             },
             data: JSON.stringify(payload),
             success: function (res) {
                 alert("Staff members successfully assigned to the field!");
                 console.log("Response:", res);
 
-                // Close the popup and reset the form
                 document.getElementById("assignStaffFieldPopup").style.display = "none";
-                document.getElementById("field_staff").value = ""; // Reset staff dropdown
-                document.getElementById("field_ids").value = "";   // Reset field dropdown
-                document.getElementById("field_staff_date").value = ""; // Reset date field
+                document.getElementById("field_staff").value = ""; 
+                document.getElementById("field_ids").value = "";   
+                document.getElementById("field_staff_date").value = ""; 
             },
             error: function (err) {
                 console.error("Failed to assign staff members:", err);
@@ -572,27 +609,37 @@ document.getElementById("assignFieldSConfirm").addEventListener("click", functio
     }
 });
 
-
-
-async function getStaffIdsByFieldCode(fieldCode) {
+async function getStaffIdsByFieldCode(fieldCode, token) {
     try {
-        const response = await fetch(`http://localhost:8080/greenShadow/api/v1/staff_field/staff-field/${fieldCode}`); // Ensure this endpoint is correct
+        const response = await fetch(`http://localhost:8080/greenShadow/api/v1/staff_field/staff-field/${fieldCode}`, {
+            method: "GET", 
+            headers: {
+                "Authorization": `Bearer ${token}`, 
+                "Content-Type": "application/json", 
+            },
+        });
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        const staffIds = await response.json(); // Assuming this directly returns an array of staff IDs
+
+        const staffIds = await response.json(); 
         return staffIds;
     } catch (error) {
         console.error('Error fetching staff IDs:', error);
-        return []; // Return an empty array in case of error
+        return []; 
     }
 }
+
 
 function fetchStaffField() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff_field",
         type: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             console.log('Response:', res);
             buildViewTable(res);

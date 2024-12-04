@@ -137,3 +137,24 @@ menuItems.forEach(item => {
         this.classList.add("active");
     });
 });
+
+$(document).ready(function() {
+    const datetimeInput = document.getElementById('datetimeInput');
+
+        function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
+});
+

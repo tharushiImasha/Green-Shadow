@@ -31,7 +31,7 @@
                 
                 <form>
                     <label for="username">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your full name">
+                    <input type="text" id="name" placeholder="Enter your full name" id="name">
 
                     <label for="username">Username or Email</label>
                     <input type="text" id="username" placeholder="Enter your username/email">
@@ -52,7 +52,7 @@
                         
                     </div>
                 
-                    <button type="submit" class="login-btn" style="margin-top: 35px;">Create Acc</button>
+                    <button type="button" class="login-btn" style="margin-top: 35px;" id="user_register">Create Acc</button>
                 </form>
                 
                 <p class="register">Have an account? <a href="/index.html">Login now.</a></p>
@@ -65,7 +65,9 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/registration.js"></script>
+    <script src="/js/auth.js"></script>
  
 </body>
 </html>

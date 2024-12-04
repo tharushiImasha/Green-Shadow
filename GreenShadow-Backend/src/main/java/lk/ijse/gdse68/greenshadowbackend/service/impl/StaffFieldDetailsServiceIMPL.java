@@ -105,10 +105,8 @@ public class StaffFieldDetailsServiceIMPL implements StaffFieldDetailsService {
             throw new IllegalArgumentException("Field code cannot be null or empty");
         }
 
-        // Fetch staff IDs associated with the given field code
         List<String> staffIds = staffFieldDetailsDAO.findStaffIdsByFieldCode(field_code);
 
-        // Check if any staff IDs were found
         if (staffIds.isEmpty()) {
             throw new EntityNotFoundException("No staff members found for field code: " + field_code);
         }
@@ -116,10 +114,60 @@ public class StaffFieldDetailsServiceIMPL implements StaffFieldDetailsService {
         // Map each staff ID to a StaffFieldDetailsDTO
         List<StaffFieldDetailsDTO> staffFieldDetailsDTOList = staffIds.stream().map(staffId -> {
             StaffFieldDetailsDTO dto = new StaffFieldDetailsDTO();
-            dto.setFieldCode(field_code);  // Set the field code
-            dto.setStaffId(List.of(staffId));  // Wrap staff ID in a list
-            // You may need to fetch the assigned date if needed, adjust accordingly
-            // dto.setAssignedDate(assignedDate); // Uncomment and fetch the assigned date if necessary
+            dto.setFieldCode(field_code);
+            dto.setStaffId(List.of(staffId));
+
+            return dto;
+        }).toList();
+
+        // Return the DTO list
+        return staffFieldDetailsDTOList;
+    }
+
+//    @Override
+//    public List<StaffFieldDetailsDTO> getFieldByStaffId(String staff_id) throws Exception {
+//        if (staff_id == null || staff_id.isEmpty()) {
+//            throw new IllegalArgumentException("Staff id cannot be null or empty");
+//        }
+//
+//        List<String> staffIds = staffFieldDetailsDAO.findFieldCodesByStaffId(staff_id);
+//
+//        if (staffIds.isEmpty()) {
+//            throw new EntityNotFoundException("No staff members found for field code: " + staff_id);
+//        }
+//
+//        // Map each staff ID to a StaffFieldDetailsDTO
+//        List<StaffFieldDetailsDTO> staffFieldDetailsDTOList = staffIds.stream().map(staffId -> {
+//            StaffFieldDetailsDTO dto = new StaffFieldDetailsDTO();
+//            dto.setFieldCode(staff_id);
+//            dto.setStaffId(List.of(staffId));
+//
+//            return dto;
+//        }).toList();
+//
+//        // Return the DTO list
+//        return staffFieldDetailsDTOList;
+//
+//    }
+
+    @Override
+    public List<StaffFieldDetailsDTO> getFieldByStaffId(String staff_id) throws Exception {
+        if (staff_id == null || staff_id.isEmpty()) {
+            throw new IllegalArgumentException("Staff ID cannot be null or empty");
+        }
+
+        // Fetch field codes associated with the given staff ID
+        List<String> fieldCodes = staffFieldDetailsDAO.findFieldCodesByStaffId(staff_id);
+
+        if (fieldCodes.isEmpty()) {
+            throw new EntityNotFoundException("No fields found for staff ID: " + staff_id);
+        }
+
+        // Map each field code to a StaffFieldDetailsDTO
+        List<StaffFieldDetailsDTO> staffFieldDetailsDTOList = fieldCodes.stream().map(fieldCode -> {
+            StaffFieldDetailsDTO dto = new StaffFieldDetailsDTO();
+            dto.setFieldCode(fieldCode);
+            dto.setStaffId(List.of(staff_id)); // Add staff_id as a list (matching your DTO structure)
             return dto;
         }).toList();
 

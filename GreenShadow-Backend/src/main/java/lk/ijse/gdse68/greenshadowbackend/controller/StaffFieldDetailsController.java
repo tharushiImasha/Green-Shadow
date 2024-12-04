@@ -72,5 +72,18 @@ public class StaffFieldDetailsController {
         }
     }
 
+    @GetMapping("/getField/{staff_id}")
+    public ResponseEntity<List<StaffFieldDetailsDTO>> getFieldCodeById(@PathVariable String staff_id) {
+        try {
+            List<StaffFieldDetailsDTO> fieldByStaffId = staffFieldDetailsService.getFieldByStaffId(staff_id);
+            return new ResponseEntity<>(fieldByStaffId, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Handle entity not found
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Handle unexpected errors
+        }
+    }
 
 }

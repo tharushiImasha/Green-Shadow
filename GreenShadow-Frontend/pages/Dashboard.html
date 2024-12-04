@@ -53,10 +53,8 @@
             </div>
 
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInput" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
             
         </header>
@@ -100,10 +98,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputCr" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>
@@ -210,10 +206,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputFi" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>
@@ -378,10 +372,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputSt" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>
@@ -537,10 +529,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputVe" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>
@@ -656,10 +646,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputEq" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>
@@ -747,8 +735,12 @@
                 </div>
                 <div class="inputs EquipmentId">
                     <label for="staff">Field ID</label>
-                    <input type="text" placeholder="Here is field id" id="equipment_field">
-                    <span class="infomation" id="equipmentFieldNote"></span>
+                    <div>
+                        <select class="form-select form-select-sm" id="field_eq_staff">
+                            <option selected>Select the field</option>
+                        </select>
+                        <span style="font-size: 11px; color: #026664af;">These are the fields where the above member works today</span>
+                    </div>
                 </div>
                 <div class="popup-buttons">
                     <button type="button" id="assignStaffConfirm">Confirm</button>
@@ -767,10 +759,8 @@
             </div>
     
             <div class="notification-container">
-                <div class="notification-icon">
-                    <img src="/assets/Notification .png" alt="">
-                </div>
-                <img src="/assets/Dashboard-Side.png" alt="Profile Picture" class="profile-picture">
+                <input type="datetime-local" id="datetimeInputLo" readonly>
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
             </div>
     
         </header>

@@ -13,4 +13,5 @@ public interface StaffFieldDetailsService {
     List<StaffFieldDetailsDTO> getAllStaffField() throws Exception;
     FieldResponse getStaffField(String field_staff_code) throws Exception;
     List<StaffFieldDetailsDTO> getStaffByFieldCode(String fieldCode) throws Exception;
+    List<StaffFieldDetailsDTO> getFieldByStaffId(String staff_id) throws Exception;
 }

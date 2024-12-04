@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class UserDTO implements SuperDTO, UserResponse {
     private String email;
+    private String name;
     private String password;
     private String role;
 }

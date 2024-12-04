@@ -13,4 +13,11 @@ import java.util.List;
 public interface StaffFieldDetailsDAO extends JpaRepository<StaffFieldDetails, StaffFieldDetailPK> {
     @Query("SELECT s.staffFieldDetailPK.staff_id FROM StaffFieldDetails s WHERE s.staffFieldDetailPK.field_code = :fieldCode")
     List<String> findStaffIdsByFieldCode(@Param("fieldCode") String fieldCode);
+
+//    @Query("SELECT s.staffFieldDetailPK.field_code FROM StaffFieldDetails s WHERE s.staffFieldDetailPK.staff_id = :staffId")
+//    String findFieldByStaff(@Param("fieldCode") String staffId);
+
+    @Query("SELECT s.staffFieldDetailPK.field_code FROM StaffFieldDetails s WHERE s.staffFieldDetailPK.staff_id = :staffId")
+    List<String> findFieldCodesByStaffId(@Param("staffId") String staffId);
+
 }

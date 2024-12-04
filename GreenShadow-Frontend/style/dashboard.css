@@ -157,18 +157,11 @@ header input::placeholder{
 }
 
 .notification-icon {
-    width: 45px;
-    height: 45px;
-    background-color: #ffffff;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-}
-
-.notification-icon img{
-    width: 19px;
 }
 
 .profile-picture {
@@ -285,4 +278,46 @@ header input::placeholder{
     transform: translateY(-50%);
     border: 6px solid transparent;
     border-left-color: #162635;
+}
+
+.notification-icon {
+    display: inline-block;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+}
+
+/* Style the datetime-local input */
+#datetimeInput,
+#datetimeInputEq,
+#datetimeInputCr,
+#datetimeInputLo,
+#datetimeInputSt,
+#datetimeInputVe,
+#datetimeInputFi {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #fafafa;
+    border-radius: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    color: #004463;
+}
+
+/* Add focus effect */
+#datetimeInput:hover,
+#datetimeInputEq:hover,
+#datetimeInputCr:hover,
+#datetimeInputLo:hover,
+#datetimeInputSt:hover,
+#datetimeInputVe:hover,
+#datetimeInputFi:hover {
+    outline: none;
+    border-color: #026664af;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+}
+
+#datetimeInput::placeholder {
+    color: #aaa;
+    font-style: italic;
 }

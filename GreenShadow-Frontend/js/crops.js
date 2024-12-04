@@ -3,7 +3,27 @@ $(document).ready(function() {
         dropdownCssClass: 'custom-dropdown', 
         minimumResultsForSearch: Infinity 
     });
+
+    const datetimeInput = document.getElementById('datetimeInputCr');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 });
+
+let token = localStorage.getItem('token');
 
 function previewImage(event) {
     const imagePreview = document.getElementById('imagePreview');
@@ -86,33 +106,48 @@ function validateCropForm(){
 }
 
 function fetchCrops() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/crop",
-        type: "GET",
-        headers: {"Content-Type": "application/json"},
-        success: function(res) {
-            console.log('Response:', res);
-            buildCropTable(res);
-        },
-        error: function(err) {
-            console.error('Failed to fetch crop data:', err);
-        }
-    });
+    if(token){
+        console.log("Authorization:", "Bearer "+ token)
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/crop",
+            type: "GET",
+            contentType: 'application/json',
+            headers: {
+                "Authorization": "Bearer "+ token,
+            }, 
+            success: function(res) {
+                console.log('Response:', res);
+                buildCropTable(res);
+            },
+            error: function(err) {
+                console.error('Failed to fetch crop data:', err);
+                if (err.responseJSON && err.responseJSON.message) {
+                    console.error('Error message:', err.responseJSON.message); 
+                }
+            }
+        });
+    }
 }
 
 function fetchNextCropId() {
-    $.ajax({
-        url: "http://localhost:8080/greenShadow/api/v1/crop/next-id",
-        type: "GET",
-        success: function(res) {
-            console.log('Next Crop ID:', res);
-            document.getElementById("crop_id").value = res; 
-            document.getElementById("crop_id").readOnly = true; 
-        },
-        error: function(err) {
-            console.error('Failed to fetch next crop ID:', err);
-        }
-    });
+    if(token){
+        $.ajax({
+            url: "http://localhost:8080/greenShadow/api/v1/crop/next-id",
+            type: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            success: function(res) {
+                console.log('Next Crop ID:', res);
+                document.getElementById("crop_id").value = res; 
+                document.getElementById("crop_id").readOnly = true; 
+            },
+            error: function(err) {
+                console.error('Failed to fetch next crop ID:', err);
+            }
+        });
+    }
 }
 
 $(document).ready(function() {
@@ -155,12 +190,16 @@ cropForm.addEventListener('submit', (event) => {
         formData.append("crop_season", season);
         formData.append("field_code", fieldCode);
 
-        $.ajax({
+        if(token){
+            $.ajax({
             url: "http://localhost:8080/greenShadow/api/v1/crop",
             type: "POST",
             data: formData,
             processData: false, 
             contentType: false, 
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             success: (res) => {
                 console.log(JSON.stringify(res));
                 document.getElementById("crop_id").value = res.crop_code;
@@ -174,6 +213,7 @@ cropForm.addEventListener('submit', (event) => {
 
         cropForm.reset();
         clearCropForm();
+        }
     }
 });
 
@@ -211,9 +251,13 @@ function buildCropTable(allCrops){
 
 function deleteCropData(id) {
     if (confirm("Are you sure you want to delete this crop?")) {
-        $.ajax({
+        if(token){
+            $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/crop/${id}`,
             type: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchCrops();
@@ -223,6 +267,7 @@ function deleteCropData(id) {
                 console.error('Failed to delete crop:', err);
             }
         });
+        }
     } else {
         console.log('Delete action canceled');
     }
@@ -286,27 +331,32 @@ document.querySelector('#crop_update').onclick = function() {
         formData.append('crop_image', existingImageSrc); 
     }
 
-    $.ajax({
-        url: `http://localhost:8080/greenShadow/api/v1/crop/${crop_id}`, 
-        type: "PATCH",
-        data: formData,
-        processData: false, 
-        contentType: false, 
-        success: function(res, status, xhr) {
-            if (xhr.status === 204) {  
-                console.log('Crop updated successfully');
-                fetchCrops();  
-            } else {
-                console.error('Failed to update crop:', res);
+    if(token){
+        $.ajax({
+            url: `http://localhost:8080/greenShadow/api/v1/crop/${crop_id}`, 
+            type: "PATCH",
+            data: formData,
+            processData: false, 
+            contentType: false, 
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            success: function(res, status, xhr) {
+                if (xhr.status === 204) {  
+                    console.log('Crop updated successfully');
+                    fetchCrops();  
+                } else {
+                    console.error('Failed to update crop:', res);
+                }
+            },
+            error: function(err) {
+                console.error('Failed to update crop:', err);
+                if (err.responseText) {
+                    console.log('Error details:', err.responseText);
+                }
             }
-        },
-        error: function(err) {
-            console.error('Failed to update crop:', err);
-            if (err.responseText) {
-                console.log('Error details:', err.responseText);
-            }
-        }
-    });
+        });
+    }
 
     document.getElementById("crop_update").style.display = "none";
     document.getElementById("crop_add").style.display = "block";
@@ -315,10 +365,14 @@ document.querySelector('#crop_update').onclick = function() {
 };
 
 function populateFieldDropdown() {
-    $.ajax({
+    if(token){
+        $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/field", 
         type: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             const fieldDropdown = $("#field-crop");
             fieldDropdown.empty(); 
@@ -337,6 +391,7 @@ function populateFieldDropdown() {
             console.error('Failed to fetch fields:', err);
         }
     });
+    }
 }
 
 $("#crop_search").keydown(function (e) {
@@ -347,7 +402,10 @@ $("#crop_search").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/crop/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Bearer token format
+                    'Content-Type': 'application/json'
+                },
                 success: function(crop) {
                     if (crop && crop.crop_code) { 
                         populateCropForm(crop);

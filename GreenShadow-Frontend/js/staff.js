@@ -155,7 +155,10 @@ function fetchStaff() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff",
         type: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res) {
             console.log('Response:', res);
             buildStaffTable(res);
@@ -170,6 +173,9 @@ function fetchNextStaffId() {
     $.ajax({
         url: "http://localhost:8080/greenShadow/api/v1/staff/next-id",
         type: "GET",
+        headers: {
+            "Authorization": "Bearer "+ token,
+        }, 
         success: function(res) {
             console.log('Next Staff ID:', res);
             document.getElementById("staff_id").value = res; 
@@ -191,6 +197,24 @@ $(document).ready(function() {
         let selectedValue = $(this).val();
         console.log('Selected field code:', selectedValue);
     });
+
+    const datetimeInput = document.getElementById('datetimeInputSt');
+
+    function updateDateTime() {
+        const now = new Date();
+
+        const formattedDateTime = now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, '0') + "-" +
+            String(now.getDate()).padStart(2, '0') + "T" +
+            String(now.getHours()).padStart(2, '0') + ":" +
+            String(now.getMinutes()).padStart(2, '0');
+
+        datetimeInput.value = formattedDateTime;
+    }
+
+    setInterval(updateDateTime, 1000);
+
+    updateDateTime();
 
     fetchNextStaffId();
     fetchStaff(); 
@@ -245,7 +269,10 @@ staffForm.addEventListener('submit', (event) => {
             url: "http://localhost:8080/greenShadow/api/v1/staff",
             type: "POST",
             data: staffJson,
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             success:(res) => {
                 console.log(JSON.stringify(res));
                 fetchStaff();
@@ -297,6 +324,9 @@ function deleteStaffData(id) {
         $.ajax({
             url: `http://localhost:8080/greenShadow/api/v1/staff/${id}`,
             type: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             success: function(res) {
                 console.log('Delete Response:', res);
                 fetchStaff();
@@ -378,7 +408,10 @@ document.querySelector('#staff_update').onclick = function() {
         url: `http://localhost:8080/greenShadow/api/v1/staff/${staffData.id}`, 
         type: "PATCH",
         data: staffJson,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
         success: function(res, status, xhr) {
             if (xhr.status === 204) { // No Content
                 console.log('Update member successfully');
@@ -450,7 +483,10 @@ $("#search_staff").keydown(function (e) {
             $.ajax({
                 url: `http://localhost:8080/greenShadow/api/v1/staff/${id}`,
                 type: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 success: function(staff) {
                     if (staff && staff.id) { 
                         populateStaffForm(staff);

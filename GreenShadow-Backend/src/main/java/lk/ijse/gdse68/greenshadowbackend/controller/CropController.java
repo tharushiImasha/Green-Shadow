@@ -33,7 +33,7 @@ public class CropController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> saveField(
+    public ResponseEntity<Void> saveCrop(
             @RequestPart("common_name") String common_name,
             @RequestPart("specific_name") String specific_name,
             @RequestPart("crop_image") MultipartFile crop_image,
@@ -53,7 +53,7 @@ public class CropController {
             buildCropDTO.setCrop_season(crop_season);
             buildCropDTO.setField_code(field_code);
 
-            cropService.updateCrop(buildCropDTO);
+            cropService.saveCrop(buildCropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistFailedException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

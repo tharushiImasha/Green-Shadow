@@ -10,6 +10,6 @@ togglePassword.addEventListener('click', () => {
 });
 
 
-function user_login(){
-    window.location.href = '/pages/Dashboard.html';
-}
+// function user_login(){
+//     window.location.href = '/pages/Dashboard.html';
+// }
