@@ -294,7 +294,8 @@ header input::placeholder{
 #datetimeInputLo,
 #datetimeInputSt,
 #datetimeInputVe,
-#datetimeInputFi {
+#datetimeInputFi,
+#datetimeInputPr{
     width: 100%;
     padding: 10px;
     font-size: 14px;
@@ -311,7 +312,8 @@ header input::placeholder{
 #datetimeInputLo:hover,
 #datetimeInputSt:hover,
 #datetimeInputVe:hover,
-#datetimeInputFi:hover {
+#datetimeInputFi:hover,
+#datetimeInputPr:hover {
     outline: none;
     border-color: #026664af;
     box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);

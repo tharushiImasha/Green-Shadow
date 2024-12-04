@@ -48,14 +48,56 @@ function user_login (){
         success: function(response){
             console.log(response);
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("email", email);
+            localStorage.setItem("password", password);
             console.log(response.data.token);
-            window.location.href = '/pages/Dashboard.html';
+            checkRole(email);
         },
         error: function(error){
             console.log(error);
         }
     })
 }
+
+async function checkRole(email) {
+    if (!email) {
+        alert("Please enter an email address.");
+        return;
+    }
+
+    try {
+        let response = await fetch(`http://localhost:8080/greenShadow/api/v1/user/getUsers/${email}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            let user = await response.json();
+
+            let role = user.role;
+            localStorage.setItem("role", role);
+
+            if (role === "ADMINISTRATIVE") {
+                window.location.href = "/pages/DashboardAdmin.html";
+            } else if (role === "MANAGER") {
+                window.location.href = "/pages/Dashboard.html";
+            } else if (role === "SCIENTIST") {
+                window.location.href = "pages/DashboardScientist.html";
+            } else {
+                alert("Unauthorized: You do not have administrative access.");
+            }
+        } else {
+            console.error("Failed to fetch user data:", response.status);
+            alert("User not found or an error occurred.");
+        }
+    } catch (error) {
+        console.error("Error while fetching user data:", error);
+        alert("An error occurred. Please try again later.");
+    }
+}
+
 
 function fetchStaff() {
     $.ajax({
@@ -76,7 +118,6 @@ function fetchStaff() {
 
 function checkEmail(staff){
     let isAuthorized = false; 
-    let isRegistered = false;
     let email = document.getElementById("username").value;
 
     if (!Array.isArray(staff)) {
@@ -88,7 +129,7 @@ function checkEmail(staff){
         let staffEmail = element.email;
         let staffRole = element.role;
 
-        if (staffEmail === email && (staffRole === 'ADMINISTRATIVE,' || staffRole === 'MANAGER,' || staffRole === 'MANAGER')) {
+        if (staffEmail === email && (staffRole === 'ADMINISTRATIVE,' || staffRole === 'MANAGER,' || staffRole === 'SCIENTIST')) {
             role = element.role;
             isAuthorized = true; 
         }

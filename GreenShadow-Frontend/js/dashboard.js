@@ -6,6 +6,8 @@ document.getElementById("vehicles").style.display = "none";
 document.getElementById("equipment").style.display = "none";
 document.getElementById("logs").style.display = "none";
 
+document.getElementById("profile").style.display = "none";
+
 document.getElementById("dashboard-btn").addEventListener("click", function(event){
 
     event.preventDefault();
@@ -131,9 +133,7 @@ document.getElementById("dashboard-btn").classList.add("active");
 
 menuItems.forEach(item => {
     item.addEventListener("click", function() {
-        // Remove active class from all items
         menuItems.forEach(el => el.classList.remove("active"));
-        // Add active class to the clicked item
         this.classList.add("active");
     });
 });
@@ -158,3 +158,19 @@ $(document).ready(function() {
     updateDateTime();
 });
 
+// document.getElementsByClassName("profile-picture")
+
+function getProfile(){
+    document.getElementById("profile").style.display = "block";
+
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("crops").style.display = "none";
+    document.getElementById("fields").style.display = "none";
+    document.getElementById("staff").style.display = "none";
+    document.getElementById("vehicles").style.display = "none";
+    document.getElementById("equipment").style.display = "none";
+    document.getElementById("logs").style.display = "none";
+
+    const fieldImageDiv = document.getElementById("fieldImage");
+    fieldImageDiv.style.backgroundImage = "url('/assets/ProfileSide.png')";
+}

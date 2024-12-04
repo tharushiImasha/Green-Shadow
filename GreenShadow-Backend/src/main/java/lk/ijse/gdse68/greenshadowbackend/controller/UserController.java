@@ -52,7 +52,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "getUsers/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserResponse getSelectedUser(@PathVariable("email") String email) throws Exception {
         return userService.getUser(email);
     }

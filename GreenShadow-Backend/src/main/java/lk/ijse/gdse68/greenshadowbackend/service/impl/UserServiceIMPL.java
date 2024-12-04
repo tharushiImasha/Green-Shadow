@@ -42,7 +42,7 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
         }else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRole("DASH_ADMIN");
+            user.setRole(user.getRole());
             userDAO.save(modelMapper.map(user, UserEntity.class));
             return VarList.Created;
         }

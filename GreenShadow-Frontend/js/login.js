@@ -8,8 +8,3 @@ togglePassword.addEventListener('click', () => {
     togglePassword.classList.toggle('ri-eye-line');
     togglePassword.classList.toggle('ri-eye-off-line');
 });
-
-
-// function user_login(){
-//     window.location.href = '/pages/Dashboard.html';
-// }

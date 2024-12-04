@@ -1,0 +1,42 @@
+.pro_img{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.profile-group{
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.profile-group h2{
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.profile-group h5{
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.384);
+}
+
+.pw-visible {
+    position: relative;
+}
+
+#toggle-conf-password {
+    position: absolute;
+    right: 20px;
+    top: 55%;
+    cursor: pointer;
+}
+
+#toggle-password{
+    position: absolute;
+    left: 430px;
+    top: 55%;
+    cursor: pointer;
+}
