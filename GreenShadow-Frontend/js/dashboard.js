@@ -164,7 +164,31 @@ $(document).ready(function() {
 
     updateDateTime();
     fetchVehicleD();
+    fetchUser(localStorage.getItem("email"))
 });
+
+let userName = document.getElementById("userNameD")
+
+async function fetchUser(email) {
+    try {
+        let response = await fetch(`http://localhost:8080/greenShadow/api/v1/user/getUsers/${email}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            let user = await response.json();
+
+            userName.innerHTML = user.name;
+        } else {
+            console.error("Failed to fetch user data:", response.status);
+        }
+    } catch (error) {
+        console.error("Error while fetching user data:", error);
+    }
+}
 
 function getProfile(){
     document.getElementById("profile").style.display = "block";
