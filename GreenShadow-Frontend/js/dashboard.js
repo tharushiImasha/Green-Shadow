@@ -19,6 +19,7 @@ document.getElementById("dashboard-btn").addEventListener("click", function(even
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Dashboard-Side.png')";
@@ -36,6 +37,7 @@ document.getElementById("crops-btn").addEventListener("click", function(event){
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Crop-img.png')";
@@ -53,6 +55,7 @@ document.getElementById("fields-btn").addEventListener("click", function(event){
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Field-img.png')";
@@ -70,6 +73,7 @@ document.getElementById("staff-btn").addEventListener("click", function(event){
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Staff-img.png')";
@@ -87,6 +91,7 @@ document.getElementById("vehicles-btn").addEventListener("click", function(event
     document.getElementById("vehicles").style.display = "block";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Vehicle-img.png')";
@@ -104,6 +109,7 @@ document.getElementById("equipment-btn").addEventListener("click", function(even
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "block";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Equipment-img.png')";
@@ -121,6 +127,7 @@ document.getElementById("logs-btn").addEventListener("click", function(event){
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
     document.getElementById("logs").style.display = "block";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Logs-img.png')";
@@ -156,9 +163,8 @@ $(document).ready(function() {
     setInterval(updateDateTime, 1000);
 
     updateDateTime();
+    fetchVehicleD();
 });
-
-// document.getElementsByClassName("profile-picture")
 
 function getProfile(){
     document.getElementById("profile").style.display = "block";
@@ -173,4 +179,109 @@ function getProfile(){
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/ProfileSide.png')";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    function fetchFields() {
+        if (token) {
+            $.ajax({
+                url: "http://localhost:8080/greenShadow/api/v1/field",
+                type: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                success: function (res) {
+                    console.log('Response:', res);
+                    
+                    // Filter out fields with the name "Store Field"
+                    const filteredFields = res.filter(field => field.field_name !== "Store");
+                    
+                    generateBarChart(filteredFields);
+                },
+                error: function (err) {
+                    console.error('Failed to fetch field data:', err);
+                }
+            });
+        }
+    }
+
+    function generateBarChart(fields) {
+        const fieldNames = fields.map(field => field.field_name);
+        const extentSizes = fields.map(field => field.extent_size);
+
+        const ctx = document.getElementById('fieldExtentChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: fieldNames,
+                datasets: [{
+                    label: 'Extent Size (acres)',
+                    data: extentSizes,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Field Extent Sizes'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    fetchFields();
+});
+
+
+
+function fetchVehicleD() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/vehicle",
+        type: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        success: function(res) {
+            console.log('Response:', res);
+            displayAvailableVehicles(res);
+        },
+        error: function(err) {
+            console.error('Failed to fetch vehicle data:', err);
+        }
+    });
+}
+
+function displayAvailableVehicles(vehicleData) {
+    // Clear existing vehicle list
+    const vehicleList = $('#vehicleList');
+    vehicleList.empty();
+
+    // Loop through the data and display only available vehicles
+    vehicleData.forEach(vehicle => {
+        if (vehicle.status === 'available') { // Assuming 'status' indicates availability
+            const listItem = `
+                <li>
+                    <strong>ID:</strong> ${vehicle.id} 
+                    <br><strong>Type:</strong> ${vehicle.category}
+                </li>`;
+            vehicleList.append(listItem);
+        }
+    });
 }

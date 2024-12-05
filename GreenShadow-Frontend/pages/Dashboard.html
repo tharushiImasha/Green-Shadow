@@ -66,13 +66,17 @@
         </div>
 
         <section class="widgets">
-            <div class="widget plants">
-                <h3>Most Cultivated Plants</h3>
-                <!-- Add images and text for plants here -->
+            <div class="widget chart">
+                <h3>Field Extent Sizes</h3>
+                <canvas id="fieldExtentChart"></canvas>
             </div>
             <div class="widget chart">
                 <h3>Cultivated Plants</h3>
-                <!-- Placeholder for a bar chart -->
+                <div id="vehicleBox" style="border: 1px solid #ccc; padding: 10px; width: 300px; height: auto; overflow-y: auto;">
+                    <h3>Available Vehicles</h3>
+                    <ul id="vehicleList"></ul>
+                </div>
+
             </div>
             <div class="widget cost">
                 <h3>Harvesting Cost</h3>
@@ -100,7 +104,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputCr" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture" onclick="getProfile()">
             </div>
     
         </header>
@@ -208,7 +212,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputFi" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture" onclick="getProfile()">
             </div>
     
         </header>
@@ -374,7 +378,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputSt" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture"  onclick="getProfile()">
             </div>
     
         </header>
@@ -531,7 +535,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputVe" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture" onclick="getProfile()">
             </div>
     
         </header>
@@ -648,7 +652,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputEq" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture" onclick="getProfile()">
             </div>
     
         </header>
@@ -761,7 +765,7 @@
     
             <div class="notification-container">
                 <input type="datetime-local" id="datetimeInputLo" readonly>
-                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture">
+                <img src="/assets/profilPic.png" alt="Profile Picture" class="profile-picture" onclick="getProfile()">
             </div>
     
         </header>
@@ -965,6 +969,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="/js/validation/allValidation.js"></script>
 

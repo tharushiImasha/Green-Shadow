@@ -12,6 +12,10 @@
     margin-bottom: 50px;
 }
 
+.profile-picture{
+    cursor: pointer;
+}
+
 .profile-group h2{
     font-size: 28px;
     font-weight: 600;
@@ -27,16 +31,25 @@
     position: relative;
 }
 
-#toggle-conf-password {
+.inputs {
+    position: relative;
+}
+
+#toggle-password {
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 55%;
     cursor: pointer;
 }
 
-#toggle-password{
+#toggle-conf-password {
     position: absolute;
-    left: 430px;
+    right: 10px;
     top: 55%;
     cursor: pointer;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding-right: 35px;
 }

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,9 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public int saveUser(UserDTO user) throws Exception {
         if (userDAO.existsByEmail(user.getEmail())) {
@@ -47,17 +51,33 @@ public class UserServiceIMPL implements UserDetailsService, UserService {
             return VarList.Created;
         }
     }
+//
+//    @Override
+//    public void updateUser(String email, UserDTO user) throws Exception {
+//        UserEntity byEmail = userDAO.findByEmail(email);
+//        if (byEmail == null) {
+//            throw new UserNotFound("User not found");
+//        }else {
+//            byEmail.setEmail(email);
+//            byEmail.setPassword(user.getPassword());
+//        }
+//    }
 
-    @Override
-    public void updateUser(String email, UserDTO user) throws Exception {
-        UserEntity byEmail = userDAO.findByEmail(email);
-        if (byEmail == null) {
+    public void updateUser(String email, UserDTO userDTO) throws UserNotFound {
+        // Fetch the existing user
+        UserEntity existingUser = userDAO.findByEmail(email);
+        if (existingUser == null) {
             throw new UserNotFound("User not found");
-        }else {
-            byEmail.setEmail(email);
-            byEmail.setPassword(user.getPassword());
         }
+
+        // Update user details
+        existingUser.setName(userDTO.getName());
+        existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword())); // Encode password
+
+        // Save the updated user
+        userDAO.save(existingUser);
     }
+
 
     @Override
     public void deleteUser(String email) throws Exception {

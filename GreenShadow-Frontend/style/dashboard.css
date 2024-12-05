@@ -303,6 +303,7 @@ header input::placeholder{
     border-radius: 15px;
     transition: border-color 0.3s, box-shadow 0.3s;
     color: #004463;
+    text-align: center;
 }
 
 /* Add focus effect */
@@ -322,4 +323,10 @@ header input::placeholder{
 #datetimeInput::placeholder {
     color: #aaa;
     font-style: italic;
+}
+
+.chart-container {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
 }

@@ -2,6 +2,7 @@ document.getElementById("dashboard").style.display = "block";
 document.getElementById("staff").style.display = "none";
 document.getElementById("vehicles").style.display = "none";
 document.getElementById("equipment").style.display = "none";
+document.getElementById("profile").style.display = "none";
 
 document.getElementById("dashboard-btn").addEventListener("click", function(event){
 
@@ -11,6 +12,7 @@ document.getElementById("dashboard-btn").addEventListener("click", function(even
     document.getElementById("staff").style.display = "none";
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Dashboard-Side.png')";
@@ -25,6 +27,7 @@ document.getElementById("staff-btn").addEventListener("click", function(event){
     document.getElementById("staff").style.display = "block";
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Staff-img.png')";
@@ -39,6 +42,7 @@ document.getElementById("vehicles-btn").addEventListener("click", function(event
     document.getElementById("staff").style.display = "none";
     document.getElementById("vehicles").style.display = "block";
     document.getElementById("equipment").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Vehicle-img.png')";
@@ -53,6 +57,7 @@ document.getElementById("equipment-btn").addEventListener("click", function(even
     document.getElementById("staff").style.display = "none";
     document.getElementById("vehicles").style.display = "none";
     document.getElementById("equipment").style.display = "block";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Equipment-img.png')";
@@ -93,3 +98,15 @@ $(document).ready(function() {
 });
 
 let token = localStorage.getItem('token');
+
+function getProfile(){
+    document.getElementById("profile").style.display = "block";
+
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("staff").style.display = "none";
+    document.getElementById("vehicles").style.display = "none";
+    document.getElementById("equipment").style.display = "none";
+
+    const fieldImageDiv = document.getElementById("fieldImage");
+    fieldImageDiv.style.backgroundImage = "url('/assets/ProfileSide.png')";
+}

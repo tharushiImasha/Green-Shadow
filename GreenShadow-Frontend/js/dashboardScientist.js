@@ -2,6 +2,7 @@ document.getElementById("dashboard").style.display = "block";
 document.getElementById("crops").style.display = "none";
 document.getElementById("fields").style.display = "none";
 document.getElementById("logs").style.display = "none";
+document.getElementById("profile").style.display = "none";
 
 document.getElementById("dashboard-btn").addEventListener("click", function(event){
 
@@ -11,6 +12,7 @@ document.getElementById("dashboard-btn").addEventListener("click", function(even
     document.getElementById("crops").style.display = "none";
     document.getElementById("fields").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Dashboard-Side.png')";
@@ -25,6 +27,7 @@ document.getElementById("crops-btn").addEventListener("click", function(event){
     document.getElementById("crops").style.display = "block";
     document.getElementById("fields").style.display = "none";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Crop-img.png')";
@@ -39,6 +42,7 @@ document.getElementById("fields-btn").addEventListener("click", function(event){
     document.getElementById("crops").style.display = "none";
     document.getElementById("fields").style.display = "block";
     document.getElementById("logs").style.display = "none";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Field-img.png')";
@@ -53,6 +57,7 @@ document.getElementById("logs-btn").addEventListener("click", function(event){
     document.getElementById("crops").style.display = "none";
     document.getElementById("fields").style.display = "none";
     document.getElementById("logs").style.display = "block";
+    document.getElementById("profile").style.display = "none";
 
     const fieldImageDiv = document.getElementById("fieldImage");
     fieldImageDiv.style.backgroundImage = "url('/assets/Logs-img.png')";
@@ -92,3 +97,14 @@ $(document).ready(function() {
     updateDateTime();
 });
 
+function getProfile(){
+    document.getElementById("profile").style.display = "block";
+
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("crops").style.display = "none";
+    document.getElementById("fields").style.display = "none";
+    document.getElementById("logs").style.display = "none";
+
+    const fieldImageDiv = document.getElementById("fieldImage");
+    fieldImageDiv.style.backgroundImage = "url('/assets/ProfileSide.png')";
+}

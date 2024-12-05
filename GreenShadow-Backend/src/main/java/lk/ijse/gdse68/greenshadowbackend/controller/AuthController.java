@@ -3,13 +3,16 @@ package lk.ijse.gdse68.greenshadowbackend.controller;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.AuthDTO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.ResponseDTO;
 import lk.ijse.gdse68.greenshadowbackend.dto.impl.UserDTO;
+import lk.ijse.gdse68.greenshadowbackend.exception.UserNotFound;
 import lk.ijse.gdse68.greenshadowbackend.service.impl.UserServiceIMPL;
 import lk.ijse.gdse68.greenshadowbackend.util.JwtUtil;
 import lk.ijse.gdse68.greenshadowbackend.util.VarList;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,12 +26,14 @@ public class AuthController {
     private final UserServiceIMPL userService;
     private final ResponseDTO responseDTO;
 
-    //constructor injection
-    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceIMPL userService, ResponseDTO responseDTO) {
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceIMPL userService, ResponseDTO responseDTO, PasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.responseDTO = responseDTO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/authenticate")
@@ -89,6 +94,30 @@ public class AuthController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
+    @PatchMapping(value = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateUser(@PathVariable("email") String email, @RequestBody UserDTO userDTO) throws Exception {
+        try {
+            // Validate the input
+            if (userDTO == null || (email == null || email.isEmpty())) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            // Encode the new password
+            if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+                userDTO.setPassword(encodedPassword); // Set the encoded password in the DTO
+            }
+
+            userService.updateUser(email, userDTO);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (UserNotFound e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
