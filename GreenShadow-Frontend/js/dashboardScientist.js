@@ -4,6 +4,8 @@ document.getElementById("fields").style.display = "none";
 document.getElementById("logs").style.display = "none";
 document.getElementById("profile").style.display = "none";
 
+let token = localStorage.getItem('token');
+
 document.getElementById("dashboard-btn").addEventListener("click", function(event){
 
     event.preventDefault();

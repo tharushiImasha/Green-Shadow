@@ -54,11 +54,6 @@ $(document).ready(function() {
 });
 
 async function fetchUser(email) {
-    if (!email) {
-        alert("Please enter an email address.");
-        return;
-    }
-
     try {
         let response = await fetch(`http://localhost:8080/greenShadow/api/v1/user/getUsers/${email}`, {
             method: "GET",

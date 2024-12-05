@@ -70,28 +70,33 @@
                 <h3>Field Extent Sizes</h3>
                 <canvas id="fieldExtentChart"></canvas>
             </div>
-            <div class="widget chart">
-                <h3>Cultivated Plants</h3>
-                <div id="vehicleBox" style="border: 1px solid #ccc; padding: 10px; width: 300px; height: auto; overflow-y: auto;">
-                    <h3>Available Vehicles</h3>
-                    <ul id="vehicleList"></ul>
-                </div>
 
+            <div class="widget chart">
+                <h3>Available Vehicles</h3>
+                <div id="vehicleBox"
+                    style="padding: 10px; width: 300px; height: auto; overflow-y: auto; background-color: rgba(75, 192, 192, 0.6); border: none; border-radius: 15px; display: flex; justify-content: center;">
+                    <ul id="vehicleList" style="margin-bottom: 0; padding-left: 0;"></ul>
+                </div>
+            
             </div>
-            <div class="widget cost">
-                <h3>Harvesting Cost</h3>
-                <!-- Placeholder for pie chart -->
+
+            <div class="widget cost" style="display: flex; column-gap: 30px; justify-content: center; align-items: center;">
+                <div class="weather-info" style="display: flex; column-gap: 30px">
+                    <img id="weather-icon" src="" alt="Weather Icon" style="width: 100px;">
+                    <h2 id="weather-status" style="margin-bottom: 0; width: 180px;">Weather</h2>
+                </div>
+                <div class="temperature-info" style="margin-bottom: 0;">
+                    <h2 id="temperature" style="margin-bottom: 0;">Temperature</h2>
+                </div>
             </div>
+            
             <div class="widget logs">
-                <h3>Recent Logs</h3>
-                <!-- Placeholder for recent logs -->
+                <h3>Time</h3>
+                <div class="time-info" style="margin-top: 20px;">
+                    <h2 id="time">Time</h2>
+                </div>
             </div>
-            <div class="widget weather">
-                <h3>Weather</h3>
-                <p>Partially Sunny</p>
-                <p>Temperature: 29°C</p>
-                <p>Time: 12:30:45</p>
-            </div>
+
         </section>
     </main>
 

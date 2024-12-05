@@ -23,8 +23,6 @@ $(document).ready(function() {
     updateDateTime();
 });
 
-let token = localStorage.getItem('token');
-
 function previewImage(event) {
     const imagePreview = document.getElementById('imagePreview');
     const file = event.target.files[0];

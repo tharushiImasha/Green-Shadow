@@ -8,6 +8,8 @@ document.getElementById("logs").style.display = "none";
 
 document.getElementById("profile").style.display = "none";
 
+let token = localStorage.getItem('token');
+
 document.getElementById("dashboard-btn").addEventListener("click", function(event){
 
     event.preventDefault();
@@ -163,13 +165,14 @@ $(document).ready(function() {
     setInterval(updateDateTime, 1000);
 
     updateDateTime();
-    fetchVehicleD();
-    fetchUser(localStorage.getItem("email"))
 });
 
-let userName = document.getElementById("userNameD")
+let userNameD = document.getElementById("userNameD")
+fetchUser(localStorage.getItem("email"))
+fetchVehicleD();
 
 async function fetchUser(email) {
+    console.log("jkhuh")
     try {
         let response = await fetch(`http://localhost:8080/greenShadow/api/v1/user/getUsers/${email}`, {
             method: "GET",
@@ -180,8 +183,7 @@ async function fetchUser(email) {
 
         if (response.ok) {
             let user = await response.json();
-
-            userName.innerHTML = user.name;
+            userNameD.innerHTML = user.name;
         } else {
             console.error("Failed to fetch user data:", response.status);
         }
@@ -219,7 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 success: function (res) {
                     console.log('Response:', res);
                     
-                    // Filter out fields with the name "Store Field"
                     const filteredFields = res.filter(field => field.field_name !== "Store");
                     
                     generateBarChart(filteredFields);
@@ -293,19 +294,46 @@ function fetchVehicleD() {
 }
 
 function displayAvailableVehicles(vehicleData) {
-    // Clear existing vehicle list
     const vehicleList = $('#vehicleList');
     vehicleList.empty();
 
-    // Loop through the data and display only available vehicles
     vehicleData.forEach(vehicle => {
-        if (vehicle.status === 'available') { // Assuming 'status' indicates availability
+        if (vehicle.status === 'Available') {
             const listItem = `
                 <li>
-                    <strong>ID:</strong> ${vehicle.id} 
+                    <strong>ID:</strong> ${vehicle.vehicle_code} 
                     <br><strong>Type:</strong> ${vehicle.category}
                 </li>`;
             vehicleList.append(listItem);
         }
     });
 }
+
+
+const apiKey = 'c020e98536e93899394afe2946800208';
+const city = 'Galle'; 
+
+async function fetchWeather() {
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`);
+        const data = await response.json();
+
+        const weatherStatus = data.weather[0].description;
+        const temperature = data.main.temp;
+        const icon = data.weather[0].icon;
+
+        document.getElementById('weather-status').innerText = weatherStatus.charAt(0).toUpperCase() + weatherStatus.slice(1);
+        document.getElementById('temperature').innerText = `${temperature} °C`;
+        document.getElementById('weather-icon').src = `http://openweathermap.org/img/wn/${icon}.png`;
+
+        // Display current time
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('time').innerText = now.toLocaleTimeString();
+        }, 1000);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
+}
+
+fetchWeather();
