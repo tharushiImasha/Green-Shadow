@@ -331,3 +331,72 @@ header input::placeholder{
     text-align: center;
 }
 
+
+.container {
+    background-color: #F1F7F7;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.container h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.plant-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.plant-item {
+    text-align: center;
+    margin: 0 5px;
+}
+
+.plant-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ddd;
+}
+
+.rice {
+    background-image: url('/assets/rice.png');
+}
+
+.green-gram {
+    background-image: url('/assets/greenGram.jpg');
+}
+
+.cassava {
+    background-image: url('/assets/cassava.jpeg');
+}
+
+.chick-pea {
+    background-image: url('/assets/chickpea.jpg');
+}
+
+.plant-name {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #000;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.plant-area {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #555;
+}

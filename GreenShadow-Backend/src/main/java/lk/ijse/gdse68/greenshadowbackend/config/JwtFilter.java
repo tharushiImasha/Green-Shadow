@@ -29,36 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-//        String authorization = httpServletRequest.getHeader("Authorization");
-//        String token = null;
-//        String email = null;
-//
-//        if (null != authorization && authorization.startsWith("Bearer ")) {
-//            token = authorization.substring(7);
-//            email = jwtUtil.getUsernameFromToken(token);
-//            Claims claims = jwtUtil.getUserRoleCodeFromToken(token);
-//            httpServletRequest.setAttribute("email", email);
-//            httpServletRequest.setAttribute("role", claims.get("role"));
-//        }
-//
-//        if (null != email && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            UserDetails userDetails = userService.loadUserByUsername(email);
-//
-//            if (jwtUtil.validateToken(token, userDetails)) {
-//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//
-//                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-//
-//                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//
-//            }
-//        }
-//
-//        filterChain.doFilter(httpServletRequest, httpServletResponse);
-//    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {

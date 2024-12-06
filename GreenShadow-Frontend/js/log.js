@@ -319,6 +319,7 @@ document.querySelector('#log_update').onclick = function() {
             if (xhr.status === 204) {  
                 console.log('Log updated successfully');
                 fetchLogs();  
+                fetchNextLogId();
             } else {
                 console.error('Failed to update log:', res);
             }

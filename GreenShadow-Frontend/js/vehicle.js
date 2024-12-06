@@ -50,7 +50,7 @@ function validateVehicleForm(){
         $("#vehiCategoryError").text("Please enter vehicle category");
         $("#vehicle_category").css("border-color",  "red");
         return false;
-    }else if (!(regexName.test($("#vehicle_category").val()))){
+    }else if (!(fieldRegex.test($("#vehicle_category").val()))){
         $("#vehiCategoryError").text("Please enter valid vehicle category");
         $("#vehicle_category").css("border-color",  "red");
         return false;

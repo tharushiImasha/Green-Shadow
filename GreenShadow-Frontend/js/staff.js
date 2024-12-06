@@ -416,6 +416,7 @@ document.querySelector('#staff_update').onclick = function() {
             if (xhr.status === 204) { // No Content
                 console.log('Update member successfully');
                 fetchStaff(); 
+                fetchNextStaffId();
             } else {
                 console.error('Failed to update member:', res);
             }

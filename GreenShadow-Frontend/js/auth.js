@@ -28,6 +28,7 @@ function registerUser(role){
             },
             error: function(error){
                 console.log(error);
+                alert("Invalid Password")
             }
         })
     }

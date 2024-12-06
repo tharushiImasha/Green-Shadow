@@ -343,6 +343,7 @@ document.querySelector('#crop_update').onclick = function() {
                 if (xhr.status === 204) {  
                     console.log('Crop updated successfully');
                     fetchCrops();  
+                    fetchNextCropId();
                 } else {
                     console.error('Failed to update crop:', res);
                 }

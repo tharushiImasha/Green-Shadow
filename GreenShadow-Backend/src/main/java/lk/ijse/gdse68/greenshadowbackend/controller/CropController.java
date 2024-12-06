@@ -8,6 +8,8 @@ import lk.ijse.gdse68.greenshadowbackend.exception.FieldNotFound;
 import lk.ijse.gdse68.greenshadowbackend.service.CropService;
 import lk.ijse.gdse68.greenshadowbackend.util.AppUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,12 +25,16 @@ import java.util.List;
 @CrossOrigin
 public class CropController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CropController.class);
+
     @Autowired
     private final CropService cropService;
 
     @GetMapping("/next-id")
     public ResponseEntity<String> getNextCropId() {
+        logger.info("Fetching the next crop ID.");
         String nextCropId = cropService.generateNextCropId();
+        logger.debug("Next Crop ID: {}", nextCropId);
         return ResponseEntity.ok(nextCropId);
     }
 
@@ -54,11 +60,13 @@ public class CropController {
             buildCropDTO.setField_code(field_code);
 
             cropService.saveCrop(buildCropDTO);
+            logger.info("Crop saved successfully: {}", buildCropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistFailedException e){
+            logger.error("Failed to persist crop data.", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("Unexpected error occurred while saving crop.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,22 +75,26 @@ public class CropController {
     public ResponseEntity<Void> deleteCrop(@PathVariable("id") String crop_code){
         try {
             cropService.deleteCrop(crop_code);
+            logger.info("Crop deleted successfully: {}", crop_code);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (CropNotFound e) {
+            logger.error("Crop not found.", e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unexpected error occurred while deleting crop.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CropResponse getSelectedCrop(@PathVariable("id") String crop_code) throws Exception {
+        logger.info("Fetching crop with ID: {}", crop_code);
         return cropService.getCrop(crop_code);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CropDTO> getAllCrops() throws Exception {
+        logger.info("Fetching all crops.");
         return cropService.getAllCrops();
     }
 
@@ -110,11 +122,14 @@ public class CropController {
             updateCropDTO.setField_code(field_code);
 
             cropService.updateCrop(updateCropDTO);
+            logger.info("Crop updated successfully: {}", updateCropDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (FieldNotFound e) {
+            logger.error("Crop not found.", e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Unexpected error occurred while updating crop.", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

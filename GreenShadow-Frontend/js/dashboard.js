@@ -337,3 +337,44 @@ async function fetchWeather() {
 }
 
 fetchWeather();
+fetchLogs();
+
+function fetchLogs() {
+    $.ajax({
+        url: "http://localhost:8080/greenShadow/api/v1/log",
+        type: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        success: function(res) {
+            console.log('Response:', res);
+            buildRecentLogTable(res);
+        },
+        error: function(err) {
+            console.error('Failed to fetch log data:', err);
+        }
+    });
+}
+
+function buildRecentLogTable(logs) {
+    const recentLogsContainer = document.getElementById("log_side");
+    
+    // Clear existing log entries
+    recentLogsContainer.innerHTML = `
+        <h4>Recent Logs</h4>
+        <h5>It is a long established fact that</h5>
+        <h5 style="margin-bottom: 20px;">a reader will be distracted</h5>
+    `;
+
+    // Dynamically add log entries
+    logs.forEach(log => {
+        const logEntry = `
+            <div class="log-det">
+                <p>${log.log_details} </br> (Date: ${log.log_date})</p>
+            </div>
+            <div class="log-line"></div>
+        `;
+        recentLogsContainer.insertAdjacentHTML('beforeend', logEntry);
+    });
+}

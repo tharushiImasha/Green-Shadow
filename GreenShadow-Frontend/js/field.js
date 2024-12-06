@@ -520,7 +520,7 @@ function populateFieldStaffDropdown() {
         },
         success: function(res) {
             const staffDropdown = $("#field_staff");
-            staffDropdown.empty(); // Clear existing options
+            staffDropdown.empty(); 
 
             res.forEach(staff => {
                 const option = `<option value="${staff.id}">${staff.id} - ${staff.first_name} ${staff.last_name}</option>`;

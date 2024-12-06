@@ -72,28 +72,66 @@
             </div>
 
             <div class="widget chart">
-                <h3>Available Vehicles</h3>
-                <div id="vehicleBox"
-                    style="padding: 10px; width: 300px; height: auto; overflow-y: auto; background-color: rgba(75, 192, 192, 0.6); border: none; border-radius: 15px; display: flex; justify-content: center;">
-                    <ul id="vehicleList" style="margin-bottom: 0; padding-left: 0;"></ul>
+                <div class="container">
+                    <h3>Most Cultivated Plants</h3>
+                    <div class="plant-list">
+                        <div class="plant-item">
+                            <div class="plant-image rice"></div>
+                            <span class="plant-name">Rice</span>
+                        </div>
+                        <div class="plant-item">
+                            <div class="plant-image green-gram"></div>
+                            <span class="plant-name">Green Gram</span>
+                        </div>
+                        <div class="plant-item">
+                            <div class="plant-image cassava"></div>
+                            <span class="plant-name">Cassava</span>
+                        </div>
+                        <div class="plant-item">
+                            <div class="plant-image chick-pea"></div>
+                            <span class="plant-name">Chick Pea</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container"  style="display: flex; flex-direction: column; align-items:center; justify-content:center">
+                    <h3>Available Vehicles</h3>
+                    <div id="vehicleBox"
+                        style="padding: 10px; width: 300px; height: auto; overflow-y: auto; border: none; border-radius: 15px; display: flex; justify-content: center;">
+                        <ul id="vehicleList" style="margin-bottom: 0; padding-left: 0;"></ul>
+                    </div>
                 </div>
             
             </div>
 
-            <div class="widget cost" style="display: flex; column-gap: 30px; justify-content: center; align-items: center;">
-                <div class="weather-info" style="display: flex; column-gap: 30px">
-                    <img id="weather-icon" src="" alt="Weather Icon" style="width: 100px;">
-                    <h2 id="weather-status" style="margin-bottom: 0; width: 180px;">Weather</h2>
-                </div>
-                <div class="temperature-info" style="margin-bottom: 0;">
-                    <h2 id="temperature" style="margin-bottom: 0;">Temperature</h2>
+            <div class="widget cost" style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: center;">
+                <div class="container" style="background-image: url('/assets/weather.jpeg');background-color: rgba(255, 255, 255, 0.7); background-blend-mode: overlay; background-size: cover; background-position: center; border-radius: 10px;">
+                    <h3>Weather</h3>
+                    <div class="weather-info" style="display: flex; column-gap: 40px">
+                        <img id="weather-icon" src="" alt="Weather Icon" style="width: 100px;">
+                        <h2 id="weather-status" style="margin: 0; padding: 0; line-height: 2.5; font-weight: 600;">Weather</h2>
+                    </div>
                 </div>
             </div>
             
             <div class="widget logs">
-                <h3>Time</h3>
-                <div class="time-info" style="margin-top: 20px;">
-                    <h2 id="time">Time</h2>
+                <div class="container" style="display: flex; gap: 80px; align-items:center; justify-content:center">
+                    <img src="/assets/temp.png" alt="" style="width: 50px; height: 50px;">
+                    <div>
+                        <h3>Temperature</h3>
+                        <div class="temperature-info" style="margin-bottom: 0;">
+                            <h2 id="temperature" style="margin-bottom: 0;">Temperature</h2>
+                        </div>
+                    </div>
+                </div> <br>
+                <div class="container" style="display: flex; gap: 67px; align-items:center; justify-content:center">
+                    <img src="/assets/time.png" alt="" style="width: 50px; height: 50px;">
+                    <div>
+                        <h3>Time</h3>
+                        <div class="time-info" style="margin-top: 20px;">
+                            <h2 id="time">Time</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -254,7 +292,7 @@
                 </div>
         
                 <div class="inputs">
-                    <label for="size">Extend Size of the Field</label>
+                    <label for="size">Extend Size of the Field (Sq.mt)</label>
                     <input type="text" placeholder="Enter the field size" id="size">
                     <span class="error" id="sizeError"></span>
                 </div>
@@ -950,26 +988,24 @@
 
     <aside class="right-sidebar">
         <div class="field-image" id="fieldImage">
-            <!-- Image for scenic field -->
         </div>
-        <div class="recent-logs">
+
+        <div class="recent-logs" id="log_side">
             <h4>Recent Logs</h4>
             <h5>It is a long established fact that</h5>
             <h5 style="margin-bottom: 20px;">a reader will be distracted</h5>
+        
             <div class="log-det">
-                <p id="recent_logs">It is a long established fact that a reader will be distracted</p>
+                <p>Field inspection completed. (Date: 2024-12-05)</p>
             </div>
             <div class="log-line"></div>
-
+        
             <div class="log-det">
-                <p id="recent_logs">It is a long established fact that a reader will be distracted</p>
+                <p>Crop analysis started. (Date: 2024-12-06)</p>
             </div>
             <div class="log-line"></div>
-
-            <div class="log-det">
-                <p id="recent_logs">It is a long established fact that a reader will be distracted</p>
-            </div>
         </div>
+
     </aside>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
