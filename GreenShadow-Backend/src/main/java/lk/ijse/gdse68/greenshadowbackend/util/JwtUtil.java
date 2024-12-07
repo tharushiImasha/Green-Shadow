@@ -61,7 +61,6 @@ public class JwtUtil implements Serializable {
         return doGenerateToken(claims, userDTO.getEmail());
     }
 
-
     //while creating the token -
     //1. Define claims of the token, like issuer
     private String doGenerateToken(Map<String, Object> claims, String subject) {
@@ -69,7 +68,6 @@ public class JwtUtil implements Serializable {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY *1000 ))
                 .signWith(SignatureAlgorithm.HS512,secretKey).compact();
     }
-
 
     //Validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
