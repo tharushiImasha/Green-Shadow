@@ -32,7 +32,7 @@ A robust crop management system developed with **Spring Boot** and **MySQL**, fe
 3. **Field Management**
    ![Field Management](GreenShadow-Backend/src/main/resources/images/field.png)
 
-4. **Crop Logs**
+4. **Crop Management**
    ![Crop Management](GreenShadow-Backend/src/main/resources/images/crop.png)
 
 ---
