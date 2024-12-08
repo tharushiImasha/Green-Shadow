@@ -48,7 +48,6 @@ A robust crop management system developed with **Spring Boot** and **MySQL**, fe
 1. Clone the repository:
    ```bash
    git clone https://github.com/tharushiImasha/Green-Shadow.git
-   cd crop-management-system
 
 2. Set up the database:
    - Update the application.properties file with your MySQL credentials
