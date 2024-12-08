@@ -37,25 +37,5 @@ A robust crop management system developed with **Spring Boot** and **MySQL**, fe
 
 ---
 
-## 📜 Installation
-
-### Prerequisites
-- Java 11+
-- MySQL Server
-
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/tharushiImasha/Green-Shadow.git
-
-2. Set up the database:
-   - Update the application.properties file with your MySQL credentials
-
-
-3. Run the application
-
----
-
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
