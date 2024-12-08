@@ -24,16 +24,16 @@ A robust crop management system developed with **Spring Boot** and **MySQL**, fe
 ## 📷 Screenshots
 
 1. **Login**
-   ![Login](/home/tharu/academic/Green Shadow/GreenShadow-Backend/src/main/resources/images/loginPage.png)
+   ![Login](GreenShadow-Backend/src/main/resources/images/loginPage.png)
 
 2. **Dashboard**
-   ![Dashboard](/home/tharu/academic/Green Shadow/GreenShadow-Backend/src/main/resources/images/dashboard.png)
+   ![Dashboard](GreenShadow-Backend/src/main/resources/images/dashboard.png)
 
 3. **Field Management**
-   ![Field Management](/home/tharu/academic/Green Shadow/GreenShadow-Backend/src/main/resources/images/field.png)
+   ![Field Management](GreenShadow-Backend/src/main/resources/images/field.png)
 
 4. **Crop Logs**
-   ![Crop Logs](/home/tharu/academic/Green Shadow/GreenShadow-Backend/src/main/resources/images/field.pngg)
+   ![Crop Logs](GreenShadow-Backend/src/main/resources/images/field.pngg)
 
 ---
 
